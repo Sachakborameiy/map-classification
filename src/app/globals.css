@@ -18,12 +18,22 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  font-family: "Krasar",Arial, sans-serif;
   background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
+    to bottom,
+    transparent,
+    rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  }
+  
+h2, label {
+  font-family: "Krasar";
+}
+
+select {
+  font-family: "Krasar-Thin";
+  
 }
 
 @layer utilities {
@@ -33,44 +43,44 @@ body {
 }
 
 @font-face {
-  font-family: "Montserrat";
-  src: url("./../components/fonts/Montserrat-Black.ttf");
+  font-family: "Krasar";
+  src: url("./../components/fonts/otf/Krasar-Black.otf") format("opentype");
 }
 
 @font-face {
-  font-family: "Montserrat";
-  src: url("./../components/fonts/Montserrat-Bold.ttf");
+  font-family: "Krasar-Thin";
+  src: url("./../components/fonts/otf/Krasar-Regular.otf");
+}
+/* @font-face {
+  font-family: "Krasar";
+  src: url("./../components/fonts/otf/Krasar-Bold.otf");
 }
 
 @font-face {
-  font-family: "Montserrat";
-  src: url("./../components/fonts/Montserrat-ExtraBold.ttf");
+  font-family: "Krasar";
+  src: url("./../components/fonts/otf/Krasar-Book.otf");
 }
 
 @font-face {
-  font-family: "Montserrat";
-  src: url("./../components/fonts/Montserrat-ExtraLight.ttf");
+  font-family: "Krasar";
+  src: url("./../components/fonts/otf/Krasar-ExtraLight.otf");
 }
 
 @font-face {
-  font-family: "Montserrat";
-  src: url("./../components/fonts/Montserrat-Light.ttf");
+  font-family: "Krasar";
+  src: url("./../components/fonts/otf/Krasar-Light.otf");
 }
 
 @font-face {
-  font-family: "Montserrat";
-  src: url("./../components/fonts/Montserrat-Medium.ttf");
+  font-family: "Krasar";
+  src: url("./../components/fonts/otf/Krasar-Medium.otf");
 }
 
-@font-face {
-  font-family: "Montserrat";
-  src: url("./../components/fonts/Montserrat-Regular.ttf");
-}
 
 @font-face {
-  font-family: "Montserrat";
-  src: url("./../components/fonts/Montserrat-Thin.ttf");
-}
+  font-family: "Krasar";
+  src: url("./../components/fonts/otf/Krasar-Thin.otf");
+} */
 
 
 

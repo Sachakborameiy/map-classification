@@ -5,16 +5,20 @@ import Image from "next/image";
 export default function Home() {
   return (
     <main className="flex flex-col m-auto">
-      <div className="flex-1" style={{ width: "98%", maxWidth: "30rem", float: "left" }}>
+      <div className="flex-1 bg-[#F5F5F5] rounded-md w-full sh m-auto p-4 pl-5 mt-2 " style={{width: "99%"}}>
+        <span className="text-[#3399FF] font-thin">Land Classification Book</span>
+      </div>
+
+      <div className="flex-1 bg-white rounded-md mt-2 w-full m-auto" style={{width: "99%"}}>
         <div
           className="ml-2"
-          style={{ fontFamily: "MyFont, sans-serif" }}
+          style={{ fontFamily: "MyFont, sans-serif", maxWidth: "30rem" }}
         >
           <div className="mt-2">
-            <div className="bg-white rounded-lg shadow-lg p-4">
-              <h2 className="text-xl text-center font-semibold mb-4 flex​ ">
+            <div className=" rounded-lg  p-4">
+              {/* <h2 className="text-xl text-center font-semibold mb-4 flex​ ">
                 ស្វែងរកចំណាត់ថ្នាក់ទីតាំង
-              </h2>
+              </h2> */}
 
               <div className="flex">
                 <div className="mt-2 w-[25%]">
@@ -124,14 +128,15 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex-1 m-auto" style={{ width: "99%" }}>
-        <div className="bg-white mt-4 rounded-md">
+
+      <div className="flex-1 m-auto " style={{ width: "99%" }}>
+        <div className="bg-white mt-1 rounded-md">
           <div className="mt-2 p-4">
-            <div className="flex" style={{ width: "50%" }}>
+            <div className="flex" style={{ width: "100%" }}>
               <div className="w-2 h-2 bg-red-500 mt-2"></div>
               <div className="ml-2">
                 <label className="block text-md font-extrabold text-gray-700">
-                  ទីតាំង​(កំណត់សម្គាល់)
+                  ទីតាំង​ដែលបានជ្រើសរើស
                 </label>
               </div>
             </div>

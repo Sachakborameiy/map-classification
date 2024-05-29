@@ -31,9 +31,8 @@ h2, label {
   font-family: "Krasar";
 }
 
-select {
-  font-family: "Krasar-Thin";
-  
+select, span {
+  font-family: "Krasar-Regular";
 }
 
 @layer utilities {
@@ -49,6 +48,12 @@ select {
 
 @font-face {
   font-family: "Krasar-Thin";
+  src: url("./../components/fonts/otf/Krasar-Thin.otf") format("opentype");
+}
+
+
+@font-face {
+  font-family: "Krasar-Regular";
   src: url("./../components/fonts/otf/Krasar-Regular.otf");
 }
 /* @font-face {

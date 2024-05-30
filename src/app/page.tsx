@@ -41,6 +41,7 @@ export default function Home() {
   const filteredCities = data.filter(item => item.province === selectedProvince);
 
   return (
+<<<<<<< Updated upstream
     <main className="flex flex-col m-auto">
       <div
         className="flex-1 bg-[#F5F5F5] rounded-md w-full sh m-auto p-4 pl-5 mt-2 "
@@ -59,6 +60,16 @@ export default function Home() {
           className="ml-2"
           style={{ fontFamily: "MyFont, sans-serif", maxWidth: "30rem" }}
         >
+=======
+    <main className="flex flex-col mx-auto">
+      <div className="flex-1 bg-[#F5F5F5] rounded-md w-full max-w-[98%] mx-auto p-4 pl-5 mt-2">
+        <span className="text-[#3399FF] font-thin">Land Classification Book</span>
+      </div>
+
+      <div className="flex-1 bg-white rounded-md mt-2 w-full max-w-[98%] mx-auto">
+        <div className="mx-2 sm:mx-0 sm:max-w-md">
+          <div className="mt-2 rounded-lg p-4">
+>>>>>>> Stashed changes
           <div className="mt-2">
             <div className=" rounded-lg  p-4">
               {/* <h2 className="text-xl text-center font-semibold mb-4 flex​ ">
@@ -235,13 +246,19 @@ export default function Home() {
               </div>
             </div>
           </div>
+          </div>
         </div>
       </div>
 
+<<<<<<< Updated upstream
       <div className="flex-1 m-auto " style={{ width: "99%" }}>
         <div className="bg-white mt-1 rounded-md">
+=======
+      <div className="flex-1 mx-auto mt-2 w-full max-w-[98%]">
+        <div className="bg-white rounded-md">
+>>>>>>> Stashed changes
           <div className="mt-2 p-4">
-            <div className="flex" style={{ width: "100%" }}>
+            <div className="flex">
               <div className="w-2 h-2 bg-red-500 mt-2"></div>
               <div className="ml-2">
                 <label className="block text-md font-extrabold text-gray-700">
@@ -250,6 +267,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+<<<<<<< Updated upstream
           <div style={{ width: "100%" }}>
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001033.0502020214!2d102.76085120509809!3d11.45931746038002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3105f033a39282f3%3A0x37e95344b24a2873!2sKoh%20Kong%20Province!5e0!3m2!1sen!2skh!4v1716522509201!5m2!1sen!2skh"
@@ -260,6 +278,10 @@ export default function Home() {
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
+=======
+          <div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001033.0502020214!2d102.76085120509809!3d11.45931746038002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3105f033a39282f3%3A0x37e95344b24a2873!2sKoh%20Kong%20Province!5e0!3m2!1sen!2skh!4v1716522509201!5m2!1sen!2skh" width="" height="515" style={{border:"0", width: "100%"}} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+>>>>>>> Stashed changes
           </div>
         </div>
       </div>

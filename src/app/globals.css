@@ -56,36 +56,26 @@ table tr th, td, select, span {
   font-family: "Krasar-Regular";
   src: url("./../components/fonts/otf/Krasar-Regular.otf");
 }
-/* @font-face {
-  font-family: "Krasar";
-  src: url("./../components/fonts/otf/Krasar-Bold.otf");
+
+
+/* Scrollbar Override */
+table .table-custom .scroll-inner {
+	&::-webkit-scrollbar {
+		width: 10px;
+	}
+	&::-webkit-scrollbar:horizontal {
+		height: 10px;
+	}
+	&::-webkit-scrollbar-track {
+		background-color: transparentize(#ccc, 0.7);
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background: transparentize(#ccc, 0.5);
+		box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+	}
 }
 
-@font-face {
-  font-family: "Krasar";
-  src: url("./../components/fonts/otf/Krasar-Book.otf");
-}
-
-@font-face {
-  font-family: "Krasar";
-  src: url("./../components/fonts/otf/Krasar-ExtraLight.otf");
-}
-
-@font-face {
-  font-family: "Krasar";
-  src: url("./../components/fonts/otf/Krasar-Light.otf");
-}
-
-@font-face {
-  font-family: "Krasar";
-  src: url("./../components/fonts/otf/Krasar-Medium.otf");
-}
-
-
-@font-face {
-  font-family: "Krasar";
-  src: url("./../components/fonts/otf/Krasar-Thin.otf");
-} */
 
 
 

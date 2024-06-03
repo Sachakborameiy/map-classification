@@ -2,7 +2,6 @@
 
 // components/ProvinceCityList.tsx
 import React, { useEffect, useState } from 'react';
-import { fetchProvincesAndCities } from '';
 
 interface ProvinceCity {
   id: number;
@@ -10,7 +9,7 @@ interface ProvinceCity {
   // Add other fields as necessary
 }
 
-const ProvinceCityList: React.FC = () => {
+export default function Home() {
   const [data, setData] = useState<ProvinceCity[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +19,7 @@ const ProvinceCityList: React.FC = () => {
       try {
         const result = await fetchProvincesAndCities();
         setData(result);
-      } catch (err) {
+      } catch (err:any) {
         setError(err.message);
       } finally {
         setLoading(false);

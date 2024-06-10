@@ -67,7 +67,7 @@ const LegendTable: React.FC<LegendTableProps> = ({ legendData }) => {
   return (
     legendData.length > 0 && (
       <div
-        className="shadow-md rounded-lg absolute overflow-scroll top-7 opacity-90 z-50"
+        className="shadow-md rounded-lg absolute overflow-scroll top-7 opacity-90 z-50 transition-all duration-500"
         style={{ width: "85%" }}
       >
         <div className="">

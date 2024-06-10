@@ -1,5 +1,5 @@
   "use client";
-  import { ChevronDown, Download, Trash2 } from "lucide-react";
+  import { ChevronDown, Download, Minus, MinusIcon, SquareArrowOutUpRight, Trash2 } from "lucide-react";
   import { setDriver } from "mongoose";
   import Image from "next/image";
   import { useEffect, useState, useMemo } from "react";
@@ -7,7 +7,8 @@
   import MapAPIs from "@/components/map-generate/page";
   import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
   import axios from "axios";
-
+  import LegendTable from "@/components/map-generate/LegendTable";
+  import exportToExcel from "@/components/map-generate/exportToexcel";
   interface ProvinceCity {
     name: string;
   }
@@ -23,32 +24,22 @@
     village: string;
   }
 
-  const mapContainerStyle = {
-    height: "400px",
-    width: "800px"
-  };
-  const center = {
-    lat: -3.745,
-    lng: -38.523
-  };
 
   export default function MapClassification() {
     const [provinces, setProvinces] = useState<ProvinceCity[]>([]);
     const [districts, setDistricts] = useState<Districts[]>([]);
     const [communes, setCommunes] = useState<Districts[]>([]);
     const [villages, setVillages] = useState<Districts[]>([]);
-    const [mapdata, setMapData] = useState<Districts[]>([]);
-    // const [mapData, setMapData] = useState({ lat: 0, lng: 0 });
+    const [mapdata, setMapData] = useState<FilterData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [selectedProvince, setSelectedProvince] = useState<string>('សូមជ្រើសរើស ខេត្ត/រាជធានី');
-    // const [selectedProvince, setSelectedProvince] = useState<string>("");
+    const [selectedProvince, setSelectedProvince] = useState<string>('');
     const [selectedDistrict, setSelectedDistrict] = useState<string>("");
     const [selectedCommune, setSelectedCommune] = useState<string>("");
     const [selectedVillage, setSelectedVillage] = useState<string>("");
     const [shouldRunEffect, setShouldRunEffect] = useState(false);
     const [pointer,setPointer] = useState({lng: 104.92802533397543 ,lat:11.556608470019766});
-
+    
     interface config {
       method: string;
       resName: string;
@@ -168,62 +159,6 @@
       }
     }, [selectedVillage]);
 
-    useEffect(() => {
-      let startX: number, startWidth: number, currentTh: HTMLElement | null;
-
-      const resizeColumn = (e: MouseEvent) => {
-        if (currentTh) {
-          const newWidth = startWidth + (e.pageX - startX);
-          currentTh.style.width = `${newWidth}px`;
-        }
-      };
-
-      const stopResize = () => {
-        document.removeEventListener("mousemove", resizeColumn);
-        document.removeEventListener("mouseup", stopResize);
-        document
-          .querySelectorAll(".resize-bar")
-          .forEach((bar) => bar.classList.remove("resizing"));
-      };
-
-      document.querySelectorAll(".resize-bar").forEach((bar) => {
-        bar.addEventListener("mousedown", (e: any) => {
-          const target = e.target as HTMLElement;
-          startX = e.pageX;
-          currentTh = target.parentElement as HTMLElement;
-          startWidth = currentTh.offsetWidth;
-          document.addEventListener("mousemove", resizeColumn);
-          document.addEventListener("mouseup", stopResize);
-          target.classList.add("resizing");
-        });
-      });
-    }, []);
-
-    const columnHeaders = [
-      "ខេត្ត/រាជធានី",
-      "កូដ ខេត្ត/រាជធានី",
-      "សាខា",
-      "កូដ សាខា",
-      "ស្រុក/ខណ្ឌ/ក្រុង",
-      "កូដ ស្រុក/ខណ្ឌ/ក្រុង",
-      "ឃុំ/សង្កាត់",
-      "កូដ ឃុំ/សង្កាត់",
-      "លេខទូរស័ព្ទ ឃុំ/សង្កាត់",
-      "លេខទូរស័ព្ទ មេភូមិ",
-      "ចំនួន គ្រួសារ",
-      "L-Map (ភាគរយ)",
-      "ចំណាត់ថ្នាក់",
-      "កម្រិតទីតាំង",
-      "ដីពាណិជ្ជកម្ម C1",
-      "ដីពាណិជ្ជកម្ម C2",
-      "ដីពាណិជ្ជកម្ម C3",
-      "ដីលំនៅឋាន R1",
-      "ដីលំនៅឋាន R2",
-      "ដីលំនៅឋាន R3",
-      "ដីឧស្សាហកម្ម I1",
-      "ដីឧស្សាហកម្ម I2",
-    ];
-
     const filterData: FilterData = {
       province_city: "Phnom Penh",
       district_khan_krong: "Chamkar Mon",
@@ -231,14 +166,17 @@
       village: "Village 1",
     };
 
+    const handleExport = () => {
+      let table = document.getElementsByClassName("table-custom ");
+      exportToExcel(table[0],'land_classification_book');
+    };
+
     const [formData, setFormData] = useState({
       province_city: '',
       district_khan_krong: '',
       commune: '',
       village: ''
-    });
-
-    
+    });    
 
     // const [mapData, setMapData] = useState({ lat: 0, lng: 0 });
 
@@ -249,22 +187,6 @@
         [name]: value
       }));
     };
-
-    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    //   e.preventDefault();
-    //   try {
-    //     const response = await axios.post('http://localhost:8100/value_lat_long/', formData, {
-    //       headers: {
-    //         'Content-Type': 'application/x-www-form-urlencoded',
-    //         'accept': 'application/json'
-    //       }
-    //     });
-    //     const data = response.data;
-    //     setMapData({ lat: data.lat, lng: data.lng });
-    //   } catch (error) {
-    //     console.error('Error fetching map data:', error);
-    //   }
-    // };
     
     const [tableData, setTableData] = useState([]);
     const [isTableVisible, setIsTableVisible] = useState(true);
@@ -276,6 +198,7 @@
       setSelectedCommune('');
       setSelectedVillage('');
       setMapData([]);
+      // setProvinces([]);
       setDistricts([]);
       setCommunes([]);
       setVillages([]);
@@ -283,14 +206,16 @@
       setTableData([]);
       setIsTableVisible(false);
       
-      console.log("Data has been cleared");
+    };
+
+    const toggleTableVisibility = () => {
+      setIsTableVisible(!isTableVisible);
     };
 
     return (
-      <main className="flex flex-col m-auto fixed w-full">
+      <main className="flex p-[10px] flex-col m-auto fixed w-full">
         <div
-          className="flex-1 bg-white rounded-md w-full sh m-auto p-4 pl-5 mt-2 "
-          style={{ width: "99%" }}
+          className="flex-1 bg-white rounded-md w-full sh m-auto p-4 pl-5"
         >
           <span className="text-[#3399FF] font-thin">
             Land Classification Book
@@ -299,7 +224,6 @@
 
         <div
           className="flex-1 bg-white rounded-md mt-2 w-full m-auto"
-          style={{ width: "99%" }}
         >
           <div
             className="ml-2"
@@ -320,6 +244,7 @@
                           border-[#64d1ff] rounded-md appearance-none"
                         id="province_city"
                         name="province_city"
+                        value={selectedProvince}
                         // value={selectedProvince}
                         onChange={(event) => {
                           setSelectedProvince(event.target.value);
@@ -330,7 +255,6 @@
                         <option className="text-gray-400">
                           សូមជ្រើសរើស ខេត្ត/រាជធានី
                         </option>
-                        {/* <option value="option1">គ្មានទិន្នន័យ</option> */}
                         {provinces &&
                           provinces.map((province_city, index) => (
                             <option
@@ -340,6 +264,7 @@
                               {province_city.name.split("*")[0]}
                             </option>
                           ))}
+                       
                       </select>
                     </div>
                     <div className="absolute  top-3 right-2">
@@ -502,11 +427,12 @@
         </div>
 
         <div className="flex justify-end z-index">
-          <div className="relative p-2">
-            <div className="">
+          <div className="relative p-2 pr-0">
+            <div className="">             
+              
               <button
                 // disabled={loading}
-                className="pt-1/2 p-2 cursor-pointer font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition ease-in-out duration-150 ml-auto text-white text-sm  bg-red-500 hover:bg-#771a1a uppercase"
+                className="pt-1/2 p-2  cursor-pointer font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition ease-in-out duration-150 mr-2 text-white text-sm  bg-red-500 hover:bg-#771a1a uppercase"
                 // type="button"
                 onClick={resetData}
                 
@@ -520,9 +446,9 @@
 
               <button
                 // disabled={loading}
-                className="pt-1/2 p-2 cursor-pointer font-semibold rounded-lg shadow-md hover:bg-#284870 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition ease-in-out duration-150 ml-2 text-white text-sm  bg-[#1B3351] uppercase"
+                className="pt-1/2 p-2 cursor-pointer font-semibold rounded-lg shadow-md hover:bg-#284870 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition ease-in-out duration-150 mr-2 text-white text-sm  bg-[#1B3351] uppercase"
                 // type="submit"
-                // onClick={downloadDataToExcel}
+                onClick={handleExport}
               >
                 <div className="flex">
                   <span>
@@ -530,59 +456,45 @@
                   </span>
                 </div>
               </button>
+
+              <button
+                  onClick={toggleTableVisibility}
+                  className={`pt-1/2 p-2 cursor-pointer font-semibold rounded-lg transition ease-in-out duration-150 text-black text-sm ml-auto shadow-lg shadow-indigo-500/40 bg-white uppercase`}
+                >
+                  {isTableVisible ? 
+                   <div className="flex">
+                   <span>
+                     <MinusIcon className="size-4"/>
+                   </span>
+                 </div>
+                  : 
+                  <div className="flex">
+                  <span>
+                    <SquareArrowOutUpRight className="size-4"/>
+                  </span>
+                </div>
+                  }
+                </button>
+              
             </div>
           </div>
         </div>
-        <div className="flex-1 m-auto" style={{ width: "99%" }}>
+        <div className="flex-1 h-screen m-auto w-full" >
           <div
-            className="bg-white rounded-md relative shadow-sm"
+            className="bg-white rounded-md h-full relative shadow-sm"
             style={{
-              height: "100vh",
+              height: "",
             }}
           >
-            <div>
+            <div>              
               <div className="flex items-center justify-center m-auto ">
-                {/* <div
-                  className="shadow-md rounded-lg overflow-scroll absolute top-7 opacity-90 z-50"
-                  // className="shadow-sm rounded-lg absolute top-7 opacity-90 z-50 shadow-gray-400 "
-                  style={{ width: "85%" }}
-                >
-                  {
-                    isTableVisible && (
-                      <table className="table-custom rounded-sm table-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-red-900 scrollbar-track-red-100" style={{ width: "100%", tableLayout: "fixed" }}>
-                          <thead className="bg-[#1B3351] text-white">
-                            <tr className="">
-                              {columnHeaders.map((header, index) => (
-                                <th key={index} className="relative group font-normal border px-4 py-2 text-sm w-40">
-                                  <span>{header}</span>
-                                  <div className="resize-bar absolute right-0 top-0 h-full w-2 cursor-col-resize bg-white opacity-0 group-hover:opacity-100"></div>
-                                </th>
-                              ))}
-                            </tr>
-                          </thead>                    
-
-                          <tbody>
-                            {mapdata.map((item: Districts, index) => (
-                              <tr key={index} className="border-b hover:bg-[#284870] hover:text-white bg-gray-100 cursor-pointer">
-                                {columnHeaders.map((header, idx) => (
-                                  <td key={idx} className="​​relative group border border-gray-300 px-4 py-2 text-sm">
-                                    <span>{item[header]}</span>
-                                    <div className="resize-bar absolute right-0 top-0 h-full w-2 cursor-col-resize bg-white opacity-0 group-hover:opacity-100"></div>
-                                  </td>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-
-                      </table>
-                    )
-                  }
-
-                </div> */}
+                {/* <LegendTable legendData={mapdata}></LegendTable> */}
+                {isTableVisible && <LegendTable legendData={mapdata} />}
               </div>
 
-              <div className="w-full h-screen flex flex-col">
-                <MapAPIs filterData={filterData} pointer={pointer} />
+
+              <div className="w-full mb-2 flex flex-col">
+                <MapAPIs pointer={pointer} />
               </div>
             </div>
           </div>
@@ -639,6 +551,7 @@
           </GoogleMap>
         </LoadScript> */}
         {/* End Sample Testng  */}
+        
       </main>
     );
   }

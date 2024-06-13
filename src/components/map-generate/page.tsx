@@ -77,7 +77,8 @@ const MapAPIs: NextPage<MapAPIProps> = (props) => {
   );
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyBuuXdwiiUumdY5eGtC4fXs8cxHqHGp-cg",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+    // googleMapsApiKey: "AIzaSyBuuXdwiiUumdY5eGtC4fXs8cxHqHGp-cg",
     libraries: libraries as any,
   });
 

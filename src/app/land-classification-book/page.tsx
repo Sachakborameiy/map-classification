@@ -4,11 +4,11 @@ import { setDriver } from "mongoose";
 import Image from "next/image";
 import { useEffect, useState, useMemo } from "react";
 import { fetchData } from "../../../util";
-import MapAPIs from "@/components/map-generate/page";
+import MapAPIs from "@/app/components/map-generate/page";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import axios from "axios";
-import LegendTable from "@/components/map-generate/LegendTable";
-import exportToExcel from "@/components/map-generate/exportToexcel";
+import LegendTable from "@/app/components/map-generate/LegendTable";
+import exportToExcel from "@/app/components/map-generate/exportToexcel";
 interface ProvinceCity {
   name: string;
 }
@@ -263,8 +263,7 @@ export default function MapClassification() {
                           >
                             {province_city.name.split("*")[0]}
                           </option>
-                        ))}
-                     
+                        ))}                     
                     </select>
                   </div>
                   <div className="absolute  top-3 right-2">

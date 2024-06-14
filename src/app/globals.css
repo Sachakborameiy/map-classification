@@ -43,18 +43,18 @@ table tr th, td, select, span {
 
 @font-face {
   font-family: "Krasar";
-  src: url("./../components/fonts/otf/Krasar-Black.otf") format("opentype");
+  src: url("./components/fonts/otf/Krasar-Black.otf") format("opentype");
 }
 
 @font-face {
   font-family: "Krasar-Thin";
-  src: url("./../components/fonts/otf/Krasar-Thin.otf") format("opentype");
+  src: url("./components/fonts/otf/Krasar-Thin.otf") format("opentype");
 }
 
 
 @font-face {
   font-family: "Krasar-Regular";
-  src: url("./../components/fonts/otf/Krasar-Regular.otf");
+  src: url("./components/fonts/otf/Krasar-Regular.otf");
 }
 
 

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Control</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-group">
+            <label for="dropdown1">Dropdown No.1</label>
+            <select class="form-control" id="dropdown1">
+                <option value="">Select...</option>
+                <option value="a1">a1</option>
+                <option value="a2">a2</option>
+                <option value="a3">a3</option>
+                <option value="a4">a4</option>
+                <option value="a5">a5</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="dropdown2">Dropdown No.2</label>
+            <select class="form-control" id="dropdown2" disabled>
+                <option value="">Select...</option>
+                <option value="b1">b1</option>
+                <option value="b2">b2</option>
+                <option value="b3">b3</option>
+                <option value="b4">b4</option>
+                <option value="b5">b5</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="dropdown3">Dropdown No.3</label>
+            <select class="form-control" id="dropdown3" disabled>
+                <option value="">Select...</option>
+                <option value="c1">c1</option>
+                <option value="c2">c2</option>
+                <option value="c3">c3</option>
+                <option value="c4">c4</option>
+                <option value="c5">c5</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="dropdown4">Dropdown No.4</label>
+            <select class="form-control" id="dropdown4" disabled>
+                <option value="">Select...</option>
+                <option value="d1">d1</option>
+                <option value="d2">d2</option>
+                <option value="d3">d3</option>
+                <option value="d4">d4</option>
+                <option value="d5">d5</option>
+            </select>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#dropdown1').change(function() {
+                if ($(this).val()) {
+                    $('#dropdown2').prop('disabled', false);
+                } else {
+                    $('#dropdown2').prop('disabled', true);
+                    $('#dropdown3').prop('disabled', true);
+                    $('#dropdown4').prop('disabled', true);
+                }
+            });
+
+            $('#dropdown2').change(function() {
+                if ($(this).val()) {
+                    $('#dropdown3').prop('disabled', false);
+                } else {
+                    $('#dropdown3').prop('disabled', true);
+                    $('#dropdown4').prop('disabled', true);
+                }
+            });
+
+            $('#dropdown3').change(function() {
+                if ($(this).val()) {
+                    $('#dropdown4').prop('disabled', false);
+                } else {
+                    $('#dropdown4').prop('disabled', true);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

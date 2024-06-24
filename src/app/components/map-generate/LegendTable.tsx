@@ -15,6 +15,8 @@ const LegendTable: React.FC<LegendTableProps> = ({ legendData }) => {
     "កូដ ស្រុក/ខណ្ឌ/ក្រុង",
     "ឃុំ/សង្កាត់",
     "កូដ ឃុំ/សង្កាត់",
+    "ភូមិ",
+    "កូដ ភូមិ",
     "លេខទូរស័ព្ទ ឃុំ/សង្កាត់",
     "លេខទូរស័ព្ទ មេភូមិ",
     "ចំនួន គ្រួសារ",
@@ -81,7 +83,7 @@ const LegendTable: React.FC<LegendTableProps> = ({ legendData }) => {
                 {columnHeaders.map((header, index) => (
                   <th
                     key={index}
-                    className="relative group font-normal border px-4 py-2 text-sm w-40"
+                    className={`relative group font-normal border px-4 py-2 text-sm ${index === 15? 'custom-width': 'w-40' }`}
                   >
                     <span>{header}</span>
                     <div className="resize-bar absolute right-0 top-0 h-full w-2 cursor-col-resize bg-white opacity-0 group-hover:opacity-100"></div>
@@ -99,9 +101,9 @@ const LegendTable: React.FC<LegendTableProps> = ({ legendData }) => {
                   {columnHeaders.map((header, idx) => (
                     <td
                       key={idx}
-                      className="relative group border border-gray-300 px-4 py-2 text-sm w-40"
+                      className={`relative group border border-gray-300 px-4 py-2 text-sm ${idx === 15? 'custom-width': 'w-40' }`}
                     >
-                      <span>{item[header]}</span>
+                      <span className="break-hyphen">{item[header]}</span>
                       <div className="resize-bar absolute right-0 top-0 h-full w-1.5 cursor-col-resize bg-white opacity-0 group-hover:opacity-100"></div>
                     </td>
                   ))}

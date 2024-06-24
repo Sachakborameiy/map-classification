@@ -11,7 +11,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
+    /* --background-start-rgb: 0, 0, 0; */
     --background-end-rgb: 0, 0, 0;
   }
 }
@@ -19,19 +19,14 @@
 body {
   color: rgb(var(--foreground-rgb));
   font-family: "Krasar",Arial, sans-serif;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: white;
   }
   
-h2, label {
+h2 {
   font-family: "Krasar";
 }
 
-table tr th, td, select, span {
+table tr th, td, select, span, label {
   font-family: "Krasar-Regular";
 }
 
@@ -57,6 +52,33 @@ table tr th, td, select, span {
   src: url("./components/fonts/otf/Krasar-Regular.otf");
 }
 
+.custom-width {
+  width: 700px !important;
+}
+
+.break-hyphen {
+  display: block;
+  white-space: pre;
+  word-wrap: break-word;
+}
+
+.break-hyphen::before {
+  content: attr(data-text);
+  white-space: pre; /* CSS3 */
+  word-wrap: break-word; /* IE7+ */
+}
+
+/* Optionally, you can add this to split the hyphen into a new line */
+.break-hyphen {
+  display: inline;
+}
+
+.break-hyphen::before {
+  content: attr(data-text);
+  white-space: pre;
+  word-break: break-all;
+  hyphens: auto;
+}
 
 /* Scrollbar Override */
 table .table-custom .scroll-inner {

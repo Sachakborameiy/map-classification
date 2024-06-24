@@ -1,12 +1,8 @@
 "use client";
-import { ChevronDown, Download, Minus, MinusIcon, SquareArrowOutUpRight, Trash2 } from "lucide-react";
-import { setDriver } from "mongoose";
-import Image from "next/image";
-import { useEffect, useState, useMemo } from "react";
+import { ChevronDown, Download, MinusIcon, Paintbrush, SquareArrowOutUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import { fetchData } from "../../../util";
 import MapAPIs from "@/app/components/map-generate/page";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import axios from "axios";
 import LegendTable from "@/app/components/map-generate/LegendTable";
 import exportToExcel from "@/app/components/map-generate/exportToexcel";
 interface ProvinceCity {
@@ -24,21 +20,29 @@ interface FilterData {
   village: string;
 }
 
-
 export default function MapClassification() {
   const [provinces, setProvinces] = useState<ProvinceCity[]>([]);
   const [districts, setDistricts] = useState<Districts[]>([]);
   const [communes, setCommunes] = useState<Districts[]>([]);
   const [villages, setVillages] = useState<Districts[]>([]);
   const [mapdata, setMapData] = useState<FilterData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [selectedProvince, setSelectedProvince] = useState<string>('');
-  const [selectedDistrict, setSelectedDistrict] = useState<string>("");
+  const [selectedDistrict, setSelectedDistrict] = useState(false);
   const [selectedCommune, setSelectedCommune] = useState<string>("");
   const [selectedVillage, setSelectedVillage] = useState<string>("");
   const [shouldRunEffect, setShouldRunEffect] = useState(false);
   const [pointer,setPointer] = useState({lng: 104.92802533397543 ,lat:11.556608470019766});
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const baseProtocol = process.env.NEXT_PUBLIC_PROTOCOL;
+
+  const [districtEnabledDropdown, setDistrictEnabledDropdown] = useState<boolean>(false);
+  const [communeEnableDropdown, setCommuneEnableDropdown] = useState<boolean>(false);
+  const [villageEnabledDropdown, setVillageEnabledDropdown] = useState<boolean>(false);
+
+  const [activeSelectProvince, setActiveSelectProvince] = useState(false);
+  const [activeSelectDistrict, setActiveSelectDistrict] = useState(false);
+  const [activeSelectCommune, setActiveSelectCommune] = useState(false);
+  const [activeSelectVillage, setActiveSelectVillage] = useState(false);
   
   interface config {
     method: string;
@@ -52,7 +56,7 @@ export default function MapClassification() {
   }
 
   useEffect(() => {
-    let url = "http://localhost:8100/province_city";
+    let url = `${baseProtocol}://${baseUrl}/province_city`;
     fetchData(
       url,
       null,
@@ -71,7 +75,7 @@ export default function MapClassification() {
 
       const data = new URLSearchParams();
       data.append("district_khan_krong", selectedProvince);
-      let url = "http://localhost:8100/district_khan_krong_name/";
+      let url = `${baseProtocol}://${baseUrl}/district_khan_krong_name/`;
       fetchData(
         url,
         data,
@@ -79,6 +83,9 @@ export default function MapClassification() {
         setDistricts
         // setSelectedDistrict
       );
+      setDistrictEnabledDropdown(true);
+      setCommuneEnableDropdown(false);
+      setVillageEnabledDropdown(false);
     } else {
       // setShouldRunEffect(false);
     }
@@ -94,7 +101,7 @@ export default function MapClassification() {
       const data = new URLSearchParams();
       data.append("province_city", selectedProvince);
       data.append("district_khan_krong", selectedDistrict);
-      let url = "http://localhost:8100/commune/";
+      let url = `${baseProtocol}://${baseUrl}/commune/`;
       fetchData(
         url,
         data,
@@ -102,6 +109,8 @@ export default function MapClassification() {
         setCommunes
         // setSelectedCommune
       );
+      setCommuneEnableDropdown(true);
+      setVillageEnabledDropdown(false);
     } else {
       // setShouldRunEffect(false)
     }
@@ -118,7 +127,7 @@ export default function MapClassification() {
       data.append("province_city", selectedProvince);
       data.append("district_khan_krong", selectedDistrict);
       data.append("commune_sangket", selectedCommune);
-      let url = "http://localhost:8100/village_name/";
+      let url = `${baseProtocol}://${baseUrl}/village_name/`;
       fetchData(
         url,
         data,
@@ -126,6 +135,7 @@ export default function MapClassification() {
         setVillages
         // setSelectedVillage
       );
+      setVillageEnabledDropdown(true);
     } else {
       // setShouldRunEffect(false)
     }
@@ -138,7 +148,7 @@ export default function MapClassification() {
       data.append("district_khan_krong", selectedDistrict);
       data.append("commune_sangket", selectedCommune);
       data.append("village", selectedVillage);
-      let url = "http://localhost:8100/price_land_book/";
+      let url = `${baseProtocol}://${baseUrl}/price_land_book/`;
       fetchData(url, data, { method: "POST", resName: null }, setMapData);
     } else {
       setShouldRunEffect(false);
@@ -152,19 +162,12 @@ export default function MapClassification() {
       data.append("district_khan_krong", selectedDistrict);
       data.append("commune", selectedCommune);
       data.append("village", selectedVillage);
-      let url = "http://localhost:8100/value_lat_long/";
+      let url = `http://${baseUrl}/value_lat_long/`;
       fetchData(url, data, { method: "POST", resName: null }, setPointer);
     } else {
       setShouldRunEffect(false);
     }
   }, [selectedVillage]);
-
-  const filterData: FilterData = {
-    province_city: "Phnom Penh",
-    district_khan_krong: "Chamkar Mon",
-    commune: "Toul Tum Poung 1",
-    village: "Village 1",
-  };
 
   const handleExport = () => {
     let table = document.getElementsByClassName("table-custom ");
@@ -178,8 +181,6 @@ export default function MapClassification() {
     village: ''
   });    
 
-  // const [mapData, setMapData] = useState({ lat: 0, lng: 0 });
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -190,6 +191,10 @@ export default function MapClassification() {
   
   const [tableData, setTableData] = useState([]);
   const [isTableVisible, setIsTableVisible] = useState(true);
+
+  const toggleTableVisibility = () => {
+    setIsTableVisible(!isTableVisible);
+  };
 
   const resetData 
   = () => {
@@ -204,26 +209,57 @@ export default function MapClassification() {
     setVillages([]);
     setShouldRunEffect(false);
     setTableData([]);
-    setIsTableVisible(false);
+    // setIsTableVisible(false);
+    setDistrictEnabledDropdown(false);
+    setCommuneEnableDropdown(false);
+    setVillageEnabledDropdown(false);
+    setActiveSelectProvince(false);
+    setActiveSelectDistrict(false);
+    setActiveSelectCommune(false);
+    setActiveSelectVillage(false);
     
   };
 
-  const toggleTableVisibility = () => {
-    setIsTableVisible(!isTableVisible);
+  const handleSelectClickA = () => {
+    setActiveSelectProvince(true);
+    setActiveSelectDistrict(false);
+    setActiveSelectCommune(false);
+    setActiveSelectVillage(false);
+  };
+  
+  const handleSelectClickB = () => {
+    setActiveSelectProvince(true);
+    setActiveSelectDistrict(true);
+    setActiveSelectCommune(false);
+    setActiveSelectVillage(false);
+  };
+  
+  const handleSelectClickC = () => {
+    setActiveSelectProvince(true);
+    setActiveSelectDistrict(true);
+    setActiveSelectCommune(true);
+    setActiveSelectVillage(false);
+  };
+
+  const handleSelectClickD = () => {
+    setActiveSelectVillage(true);
   };
 
   return (
-    <main className="flex p-[10px] flex-col m-auto fixed w-full">
+    <main className="bg-white flex flex-col m-auto fixed w-full">
       <div
-        className="flex-1 bg-white rounded-md w-full sh m-auto p-4 pl-5"
+        className="flex-1 bg-[#f5f5f5] rounded-md w-full sh m-auto p-2 pl-5"
+        style={{marginTop: "0.5em", boxShadow: "0px 0px 4px rgba(0,0,0,0.3)"}}
       >
-        <span className="text-[#3399FF] font-thin">
+        <span className="text-[#428BCA] font-normal text-[20px]"
+        >
           Land Classification Book
         </span>
       </div>
 
       <div
-        className="flex-1 bg-white rounded-md mt-2 w-full m-auto"
+        className="flex-1 rounded-md mt-2 w-full m-auto"
+        style={{border: "1px solid #eee"}}
       >
         <div
           className="ml-2"
@@ -233,26 +269,29 @@ export default function MapClassification() {
             <div className=" rounded-lg p-0.5 pl-4">
               <div className="flex">
                 <div className="mt-2 w-[25%]">
-                  <label className="block text-sm font-medium  text-gray-700">
+                  <label className="block text-sm">
                     ខេត្ត/រាជធានី
                   </label>
                 </div>
                 <div className="w-[75%] relative">
                   <div>
                     <select
-                      className="w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm
-                        border-[#64d1ff] rounded-md appearance-none"
+                      className={`w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm
+                        rounded-md appearance-none`}
                       id="province_city"
                       name="province_city"
                       value={selectedProvince}
-                      // value={selectedProvince}
                       onChange={(event) => {
                         setSelectedProvince(event.target.value);
                         setShouldRunEffect(true);
                       }}
-                      // onChange={handleSelectChange}
+                      onClick={handleSelectClickA}
+
+                      style={{
+                        border: activeSelectProvince ? '1px solid #64d1ff' : '1px solid #CCC',
+                      }}
                     >
-                      <option className="text-gray-400">
+                      <option className="text-sm text-[#CCC]">
                         សូមជ្រើសរើស ខេត្ត/រាជធានី
                       </option>
                       {provinces &&
@@ -274,7 +313,7 @@ export default function MapClassification() {
 
               <div className="flex">
                 <div className="mt-1.5 w-[25%]">
-                  <label className="block text-sm font-medium text-gray-700 pb-2">
+                  <label className="block text-sm pb-2">
                     ស្រុក/ក្រុង/ខណ្ខ
                   </label>
                 </div>
@@ -288,12 +327,16 @@ export default function MapClassification() {
                         setSelectedDistrict(event.target.value);
                         setShouldRunEffect(true);
                       }}
-                      className="w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm border-[#64d1ff] rounded-md appearance-none"
+                      onClick={handleSelectClickB}
+                      disabled={!districtEnabledDropdown}
+                      className="w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none"
+                      style={{
+                        border: activeSelectDistrict ? '1px solid #64d1ff' : '1px solid #CCC',
+                      }}
                     >
                       <option
                         value=""
-                        className="text-gray-400"
-                        // disabled
+                        className="text-sm text-[#CCC]"
                         selected
                       >
                         សូមជ្រើសរើស ស្រុក/ក្រុង/ខណ្ខ
@@ -307,16 +350,8 @@ export default function MapClassification() {
                             {province_city.name.split("*")[0]}
                           </option>
                         ))
-                      ) : (
-                        <option
-                          value=""
-                          className="text-gray-400"
-                          disabled
-                          selected
-                        >
-                          សូមជ្រើសរើស ស្រុក/ក្រុង/ខណ្ខ
-                        </option>
-                      )}
+                      ): null
+                      }
                     </select>
                   </div>
                   <div className="absolute  top-3 right-2">
@@ -327,7 +362,7 @@ export default function MapClassification() {
 
               <div className="flex">
                 <div className="mt-1.5 w-[25%]">
-                  <label className="block text-sm font-medium text-gray-700 pb-2">
+                  <label className="block text-sm pb-2">
                     ឃុំ/សង្កាត់
                   </label>
                 </div>
@@ -341,9 +376,14 @@ export default function MapClassification() {
                         setSelectedCommune(event.target.value);
                         setShouldRunEffect(true);
                       }}
-                      className="w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm border-[#64d1ff] rounded-md appearance-none"
+                      onClick={handleSelectClickC}
+                      disabled={!communeEnableDropdown}
+                      className="w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none"
+                      style={{
+                        border: activeSelectCommune ? '1px solid #64d1ff' : '1px solid gray',
+                      }}
                     >
-                      <option value="" className="text-gray-400" selected>
+                      <option value="" className="text-sm text-[#CCC]" selected>
                         សូមជ្រើសរើស ឃុំ/សង្កាត់
                       </option>
                       {communes.length > 0 ? (
@@ -355,16 +395,8 @@ export default function MapClassification() {
                             {province_city.name.split("*")[0]}
                           </option>
                         ))
-                      ) : (
-                        <option
-                          value=""
-                          className="text-gray-400"
-                          disabled
-                          selected
-                        >
-                          សូមជ្រើសរើស ឃុំ/សង្កាត់
-                        </option>
-                      )}
+                      ) : null
+                      }
                     </select>
                   </div>
                   <div className="absolute  top-3 right-2">
@@ -375,7 +407,7 @@ export default function MapClassification() {
 
               <div className="flex">
                 <div className="mt-1.5 w-[25%]">
-                  <label className="block text-sm font-medium text-gray-700 pb-2">
+                  <label className="block text-sm pb-2">
                     ភូមិ
                   </label>
                 </div>
@@ -389,9 +421,14 @@ export default function MapClassification() {
                         setSelectedVillage(event.target.value);
                         setShouldRunEffect(true);
                       }}
-                      className="w-full p-2 mb-2 outline-none cursor-pointer sm:text-sm border shadow-sm border-[#64d1ff] rounded-md appearance-none"
+                      onClick={handleSelectClickD}
+                      disabled={!villageEnabledDropdown}
+                      className="w-full p-2 mb-2 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none"
+                      style={{
+                        border: activeSelectVillage ? '1px solid #64d1ff' : '1px solid gray',
+                      }}
                     >
-                      <option value="" className="text-gray-400" selected>
+                      <option value="" className="text-sm text-[#CCC]" selected>
                         សូមជ្រើសរើស ភូមិ
                       </option>
                       {villages.length > 0 ? (
@@ -403,16 +440,8 @@ export default function MapClassification() {
                             {province_city.name.split("*")[0]}
                           </option>
                         ))
-                      ) : (
-                        <option
-                          value=""
-                          className="text-gray-400"
-                          disabled
-                          selected
-                        >
-                          សូមជ្រើសរើស ភូមិ
-                        </option>
-                      )}
+                      ) : null
+                      }
                     </select>
                   </div>
                   <div className="absolute top-3 right-2">
@@ -430,23 +459,18 @@ export default function MapClassification() {
           <div className="">             
             
             <button
-              // disabled={loading}
-              className="pt-1/2 p-2  cursor-pointer font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition ease-in-out duration-150 mr-2 text-white text-sm  bg-red-500 hover:bg-#771a1a uppercase"
-              // type="button"
+              className="pt-1/2 p-2  cursor-pointer font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition ease-in-out duration-150 mr-2 text-white text-sm  bg-orange-500 hover:bg-#771a1a uppercase"
               onClick={resetData}
-              
             >
               <div className="flex">
                 <span>
-                  <Trash2 className="size-4" />
+                  <Paintbrush className="size-4" />
                 </span>
               </div>
             </button>
 
             <button
-              // disabled={loading}
               className="pt-1/2 p-2 cursor-pointer font-semibold rounded-lg shadow-md hover:bg-#284870 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition ease-in-out duration-150 mr-2 text-white text-sm  bg-[#1B3351] uppercase"
-              // type="submit"
               onClick={handleExport}
             >
               <div className="flex">
@@ -458,7 +482,7 @@ export default function MapClassification() {
 
             <button
                 onClick={toggleTableVisibility}
-                className={`pt-1/2 p-2 cursor-pointer font-semibold rounded-lg transition ease-in-out duration-150 text-black text-sm ml-auto shadow-lg shadow-indigo-500/40 bg-white uppercase`}
+                className={`pt-1/2 p-2 cursor-pointer font-semibold rounded-lg transition ease-in-out duration-150 text-black text-sm ml-auto shadow-lg shadow-indigo-500/40 border border-[#1B3351] bg-white uppercase`}
               >
                 {isTableVisible ? 
                  <div className="flex">
@@ -487,70 +511,14 @@ export default function MapClassification() {
         >
           <div>              
             <div className="flex items-center justify-center m-auto ">
-              {/* <LegendTable legendData={mapdata}></LegendTable> */}
               {isTableVisible && <LegendTable legendData={mapdata} />}
             </div>
-
-
             <div className="w-full mb-2 flex flex-col">
               <MapAPIs pointer={pointer} />
             </div>
           </div>
         </div>
       </div>
-
-      {/* Testing Map Submit */}
-      {/* <form onSubmit={handleSubmit}>
-        <div>
-          <label>Province/City:</label>
-          <input
-            type="text"
-            name="province_city"
-            value={formData.province_city}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>District/Khan/Krong:</label>
-          <input
-            type="text"
-            name="district_khan_krong"
-            value={formData.district_khan_krong}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Commune:</label>
-          <input
-            type="text"
-            name="commune"
-            value={formData.commune}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Village:</label>
-          <input
-            type="text"
-            name="village"
-            value={formData.village}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Submit</button>
-      </form> */}
-
-      {/* <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={mapData.lat && mapData.lng ? mapData : center}
-          zoom={10}
-        >
-          {mapData.lat && mapData.lng && <Marker position={mapData} />}
-        </GoogleMap>
-      </LoadScript> */}
-      {/* End Sample Testng  */}
-      
     </main>
   );
 }

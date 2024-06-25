@@ -30,6 +30,16 @@ table tr th, td, select, span, label {
   font-family: "Krasar-Regular";
 }
 
+.fullscreen {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999;
+}
+
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -52,9 +62,9 @@ table tr th, td, select, span, label {
   src: url("./components/fonts/otf/Krasar-Regular.otf");
 }
 
-.custom-width {
+/* .custom-width {
   width: 700px !important;
-}
+} */
 
 .break-hyphen {
   display: block;

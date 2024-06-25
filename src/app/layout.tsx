@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" style={{overflowX: "auto"}}>
-      <body>{children}</body>
+      <body className="min-h-screen">{children}</body>
     </html>
   );
 }

@@ -1,16 +1,10 @@
 "use client";
 import { useLoadScript, GoogleMap, MarkerF } from "@react-google-maps/api";
 import type { NextPage } from "next";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback, useRef } from "react";
 import Loading from "../custom/loading";
-import { useCallback, useRef } from "react";
+import { Maximize, Minimize } from "lucide-react";
 
-interface FilterData {
-  province_city: string;
-  district_khan_krong: string;
-  commune: string;
-  village: string;
-}
 interface Pointer {
   lng: number;
   lat: number;
@@ -24,15 +18,12 @@ const MapAPIs: NextPage<MapAPIProps> = (props) => {
   const [loading, setLoading] = useState("");
   const [iframeCode, setIframeCode] = useState("");
   const pointer = props.pointer;
-  console.log(+pointer.lat, "pointer");
   const libraries = useMemo(() => ["places"], []);
   const [zoom, setZoom] = useState(14);
   const mapRef = useRef<google.maps.Map | null>(null);
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapCenter = useMemo(
     () => ({ lat: +pointer.lat, lng: +pointer.lng }),
-    // () => ({ lat: 11.556608470019766, lng: 104.92802533397543 }),
-    // () => ({ lat: 27.672932021393862, lng: 85.31184012689732 }),
-
     [pointer]
   );
   const [layers, setLayers] = useState({
@@ -43,28 +34,29 @@ const MapAPIs: NextPage<MapAPIProps> = (props) => {
     satellite: false,
   });
 
-  const trafficLayerRef = useRef<google.maps.TrafficLayer | null>(null);
-  const transitLayerRef = useRef<google.maps.TransitLayer | null>(null);
-  const bicycleLayerRef = useRef<google.maps.BicyclingLayer | null>(null);
-
   const toggleLayer = (layer: keyof typeof layers) => {
     setLayers((prev) => ({ ...prev, [layer]: !prev[layer] }));
     console.log(layers, "layers");
   };
 
-  const addLayers = (map: google.maps.Map) => {
-    const trafficLayer = new google.maps.TrafficLayer();
-    trafficLayer.setMap(map);
+  const [isToggleFullScreenView, setIsToggleFullScreenView] = useState(true);
 
-    const transitLayer = new google.maps.TransitLayer();
-    transitLayer.setMap(map);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      mapContainerRef.current?.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+      });
+      setIsFullScreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullScreen(false);
+    }
 
-    const bikeLayer = new google.maps.BicyclingLayer();
-    bikeLayer.setMap(map);
-
-    // Add more layers if needed
+    setIsToggleFullScreenView(!isToggleFullScreenView);
   };
-  console.log(mapCenter, "mapcenter");
+
   const mapOptions = useMemo<google.maps.MapOptions>(
     () => ({
       disableDefaultUI: false,
@@ -78,7 +70,6 @@ const MapAPIs: NextPage<MapAPIProps> = (props) => {
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-    // googleMapsApiKey: "AIzaSyBuuXdwiiUumdY5eGtC4fXs8cxHqHGp-cg",
     libraries: libraries as any,
   });
 
@@ -119,26 +110,19 @@ const MapAPIs: NextPage<MapAPIProps> = (props) => {
   }
 
   return (
-    <div className="w-full relative">
+    <div className="w-full relative" ref={mapContainerRef}>
       <GoogleMap
-        options={{
-          disableDefaultUI: false,
-          clickableIcons: true,
-          scrollwheel: true,
-          zoomControl: true,
-          mapTypeControl: true,
-        }}
+        options={mapOptions}
         zoom={14}
         center={mapCenter}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
         mapContainerStyle={{
           width: "100%",
-          height: "auto",
-          minHeight: "55vh",
-          maxHeight: "55vh",
+          height: isFullScreen ? "100vh" : "67vh",
           borderRadius: "5px",
         }}
         onLoad={(map) => {
+          mapRef.current = map;
           console.log("Map Loaded");
         }}
         onZoomChanged={() => {
@@ -151,17 +135,24 @@ const MapAPIs: NextPage<MapAPIProps> = (props) => {
         />
       </GoogleMap>
 
-      {/* <div>
-        <div className="max-w-screen-lg mx-auto p-6">
-          <div className="bg-gray-100 p-4 rounded-md">
-            <textarea
-              className="w-full h-32 p-2 bg-gray-200 rounded-md resize-none"
-              value={iframeCode}
-              readOnly
-            ></textarea>
+      <button
+        onClick={toggleFullScreen}
+        className="absolute top-2.5 right-2.5 bg-white text-white p-2.5 rounded"
+      >
+        {isToggleFullScreenView ? (
+          <div className="flex">
+            <span>
+              <Maximize className="w-5 h-5 text-black" />
+            </span>
           </div>
-        </div>
-      </div> */}
+        ) : (
+          <div className="flex">
+            <span>
+              <Minimize className="w-5 h-5 text-black" />
+            </span>
+          </div>
+        )}
+      </button>
     </div>
   );
 };

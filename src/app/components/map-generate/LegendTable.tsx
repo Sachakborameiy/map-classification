@@ -61,6 +61,7 @@ const LegendTable: React.FC<LegendTableProps> = ({ legendData }) => {
           document.addEventListener("mousemove", resizeColumn);
           document.addEventListener("mouseup", stopResize);
           target.classList.add("resizing");
+          return null;
         });
       });
     }
@@ -83,7 +84,7 @@ const LegendTable: React.FC<LegendTableProps> = ({ legendData }) => {
                 {columnHeaders.map((header, index) => (
                   <th
                     key={index}
-                    className={`relative group font-normal border px-4 py-2 text-sm ${index === 15? 'custom-width': 'w-40' }`}
+                    className={`relative group font-normal border px-4 py-2 text-sm ${index === 15? 'w-52': 'w-40' }`}
                   >
                     <span>{header}</span>
                     <div className="resize-bar absolute right-0 top-0 h-full w-2 cursor-col-resize bg-white opacity-0 group-hover:opacity-100"></div>

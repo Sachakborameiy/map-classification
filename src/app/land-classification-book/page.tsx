@@ -147,7 +147,6 @@ export default function MapClassification() {
         data,
         { method: "POST", resName: "villages" },
         setVillages
-        // setSelectedVillage
       );
       setVillageEnabledDropdown(true);
     } else {
@@ -166,9 +165,6 @@ export default function MapClassification() {
       fetchData(url, data, { method: "POST", resName: null }, setMapData);
 
       setShowButton(true);
-      // if (event.target.value === 'show') {
-      // } else {
-      // }
     } else {
       setShowButton(false);
       setShouldRunEffect(false);
@@ -196,42 +192,15 @@ export default function MapClassification() {
     exportToExcel(table[0], "land_classification_book");
   };
 
-  const [formData, setFormData] = useState({
-    province_city: "",
-    district_khan_krong: "",
-    commune: "",
-    village: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
   const [tableData, setTableData] = useState([]);
   const [isTableVisible, setIsTableVisible] = useState(true);
 
   const toggleFullScreen = () => {
     setIsTableVisible(!isTableVisible);
-  }
-
-  // const [isExport, setIsExport] = useState(true);
-  // const [isResetData, setIsResetData] = useState(true);
-  const [isToggleTableVisibility, setIsToggleTableVisibility] = useState(true);
-
-  const toggleTableVisibility = () => {
-    setIsTableVisible(!isTableVisible);
-    // setIsExport(!isExport);
-    // setIsResetData(!isResetData);
-    setIsToggleTableVisibility(!isToggleTableVisibility);
-
   };
 
   const resetData = () => {
-    setSelectedProvince("សូមជ្រើសរើស ខេត្ត/រាជធានី");
+    setSelectedProvince("");
     setSelectedDistrict("");
     setSelectedCommune("");
     setSelectedVillage("");
@@ -252,29 +221,83 @@ export default function MapClassification() {
     setActiveSelectVillage(false);
   };
 
-  const handleSelectClickA = () => {
-    setActiveSelectProvince(true);
-    setActiveSelectDistrict(true);
-    setActiveSelectCommune(false);
-    setActiveSelectVillage(false);
+  const handleSelectClickA = (event:any) => {
+    const value = event.target.value;
+
+    if (value) {
+      setSelectedProvince(value);
+      setActiveSelectProvince(true);
+      setActiveSelectDistrict(true);
+      setActiveSelectCommune(false);
+      setActiveSelectVillage(false);
+      
+      setSelectedDistrict('');
+      setSelectedCommune('');
+      setSelectedVillage('');
+      
+    } else {
+      setActiveSelectDistrict(false); 
+      
+      setSelectedDistrict('');
+      setSelectedCommune('');
+      setSelectedVillage('');
+    }
   };
 
-  const handleSelectClickB = () => {
-    setActiveSelectProvince(true);
-    setActiveSelectDistrict(true);
-    setActiveSelectCommune(true);
-    setActiveSelectVillage(false);
+  const handleSelectClickB = (event:any) => {
+    const value = event.target.value;
+
+    if (value) {
+      setSelectedDistrict(value); 
+      setActiveSelectCommune(true);
+      setActiveSelectProvince(true);
+      setActiveSelectDistrict(true);
+      setActiveSelectVillage(false);
+
+      setSelectedCommune('');
+      setSelectedVillage('');
+      
+    } else {
+      setActiveSelectCommune(false); 
+
+      setSelectedCommune('');
+      setSelectedVillage('');
+      
+    }
   };
 
-  const handleSelectClickC = () => {
+  const handleSelectClickC = (event:any) => {
+    const value = event.target.value;
+
+    if (value) {
+      setSelectedCommune(value); 
+      setActiveSelectVillage(true);
+      setActiveSelectCommune(true);
+      setActiveSelectProvince(true);
+      setActiveSelectDistrict(true);
+
+      setSelectedVillage('');
+      
+    } else {
+      setActiveSelectVillage(false); 
+      setSelectedVillage('');
+      
+    }
+  };
+
+  const handleSelectClickD = (event:any) => {
     setActiveSelectProvince(true);
     setActiveSelectDistrict(true);
     setActiveSelectCommune(true);
     setActiveSelectVillage(true);
-  };
-
-  const handleSelectClickD = () => {
-    setActiveSelectVillage(true);
+  
+    const value = event.target.value;
+    if (value) {
+      setActiveSelectVillage(value);
+      setActiveSelectVillage(true);
+    } else {
+      setActiveSelectVillage(false);
+    }
   };
 
   return (
@@ -290,7 +313,10 @@ export default function MapClassification() {
 
       <div
         className="flex-1 rounded-md mt-2 h-[19vh] w-full m-auto"
-        style={{ border: "1px solid #eee", boxShadow: "0px 0px 2px rgba(0,0,0,0.3)" }}
+        style={{
+          border: "1px solid #eee",
+          boxShadow: "0px 0px 2px rgba(0,0,0,0.3)",
+        }}
       >
         <div
           className="ml-2"
@@ -299,20 +325,20 @@ export default function MapClassification() {
           <div className="mt-2">
             <div className=" rounded-lg p-0.5 pl-4">
               <div className="flex">
-                <div className="mt-2 w-[25%]">
-                  <label className="block text-sm">ខេត្ត/រាជធានី</label>
+                <div className="mt-3 w-[25%]">
+                  <label className="block font-semibold text-sm">ខេត្ត/រាជធានី</label>
                 </div>
                 <div className="w-[75%] relative">
                   <div>
                     <select
-                      className={`w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm
-                        rounded-md appearance-none`}
+                      className={`w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none`}
                       id="province_city"
                       name="province_city"
                       value={selectedProvince}
                       onChange={(event) => {
                         setSelectedProvince(event.target.value);
                         setShouldRunEffect(true);
+                        setActiveSelectDistrict(event.target.value !== '');
                       }}
                       onClick={handleSelectClickA}
                       style={{
@@ -321,29 +347,27 @@ export default function MapClassification() {
                           : "1px solid #CCC",
                       }}
                     >
-                      <option className="text-sm text-[#7f7f7f]">
-                        សូមជ្រើសរើស ខេត្ត/រាជធានី
+                      <option 
+                        disabled value="" 
+                        className="text-sm font-extralight text-[#7f7f7f]">
+                        ជ្រើសរើសពីតារាង
                       </option>
-                      {provinces &&
-                        provinces.map((province_city, index) => (
-                          <option
-                            key={index}
-                            value={province_city.name.split("*")[0]}
-                          >
-                            {province_city.name.split("*")[0]}
-                          </option>
-                        ))}
+                      {provinces.map((province_city, index) => (
+                        <option key={index} value={province_city.name.split("*")[0]}>
+                          {province_city.name.split("*")[0]}
+                        </option>
+                      ))}
                     </select>
-                  </div>
-                  <div className="absolute  top-3 right-2">
-                    <ChevronDown className="text-sky-[#1B3351] size-5" />
+                    <div className="absolute z-50 top-3 right-3 pointer-events-none">
+                      <ChevronDown className="text-[#1B3351]" size={20} />
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="flex">
-                <div className="mt-1.5 w-[25%]">
-                  <label className="block text-sm pb-2">ស្រុក/ក្រុង/ខណ្ខ</label>
+                <div className="mt-1 w-[25%]">
+                  <label className="block font-semibold text-sm pb-2">ស្រុក/ក្រុង/ខណ្ខ</label>
                 </div>
                 <div
                   className="w-[75%] relative"
@@ -351,6 +375,7 @@ export default function MapClassification() {
                 >
                   <div>
                     <select
+                      value={selectedDistrict}
                       onChange={(event) => {
                         setSelectedDistrict(event.target.value);
                         setShouldRunEffect(true);
@@ -364,8 +389,11 @@ export default function MapClassification() {
                           : "1px solid #CCC",
                       }}
                     >
-                      <option value="" className="text-sm text-[#7f7f7f]" selected>
-                        សូមជ្រើសរើស ស្រុក/ក្រុង/ខណ្ខ
+                      <option
+                        disabled value=""
+                        className="text-sm text-[#7f7f7f]"
+                      >
+                        ជ្រើសរើសពីតារាង
                       </option>
                       {districts.length > 0
                         ? districts.map((province_city, index) => (
@@ -379,15 +407,15 @@ export default function MapClassification() {
                         : null}
                     </select>
                   </div>
-                  <div className="absolute  top-3 right-2">
+                  <div className="absolute z-50 top-3 right-3 pointer-events-none">
                     <ChevronDown className="text-sky-[#1B3351] size-5" />
                   </div>
                 </div>
               </div>
 
               <div className="flex">
-                <div className="mt-1.5 w-[25%]">
-                  <label className="block text-sm pb-2">ឃុំ/សង្កាត់</label>
+                <div className="mt-1 w-[25%]">
+                  <label className="block font-semibold text-sm pb-2">ឃុំ/សង្កាត់</label>
                 </div>
                 <div
                   className="w-[75%] relative"
@@ -395,6 +423,7 @@ export default function MapClassification() {
                 >
                   <div>
                     <select
+                      value={selectedCommune}
                       onChange={(event) => {
                         setSelectedCommune(event.target.value);
                         setShouldRunEffect(true);
@@ -405,11 +434,15 @@ export default function MapClassification() {
                       style={{
                         border: activeSelectCommune
                           ? "1px solid #64d1ff"
-                          : "1px solid gray",
+                          : "1px solid #CCC",
                       }}
                     >
-                      <option value="" className="text-sm text-[#7f7f7f]" selected>
-                        សូមជ្រើសរើស ឃុំ/សង្កាត់
+                      <option
+                        disabled
+                        value=""
+                        className={`text-sm text-[#7f7f7f]`}
+                      >
+                        ជ្រើសរើសពីតារាង
                       </option>
                       {communes.length > 0
                         ? communes.map((province_city, index) => (
@@ -418,20 +451,21 @@ export default function MapClassification() {
                               value={province_city.name.split("*")[0]}
                             >
                               {province_city.name.split("*")[0]}
+
                             </option>
                           ))
                         : null}
                     </select>
                   </div>
-                  <div className="absolute  top-3 right-2">
+                  <div className="absolute  top-3 right-3 pointer-events-none">
                     <ChevronDown className="text-sky-[#1B3351] size-5" />
                   </div>
                 </div>
               </div>
 
               <div className="flex">
-                <div className="mt-1.5 w-[25%]">
-                  <label className="block text-sm pb-2">ភូមិ</label>
+                <div className="mt-1 w-[25%]">
+                  <label className="block font-semibold text-sm pb-2">ភូមិ</label>
                 </div>
                 <div
                   className="w-[75%] relative"
@@ -439,6 +473,7 @@ export default function MapClassification() {
                 >
                   <div>
                     <select
+                      value={selectedVillage}
                       onChange={(event) => {
                         setSelectedVillage(event.target.value);
                         setShouldRunEffect(true);
@@ -449,11 +484,15 @@ export default function MapClassification() {
                       style={{
                         border: activeSelectVillage
                           ? "1px solid #64d1ff"
-                          : "1px solid gray",
+                          : "1px solid #CCC",
                       }}
                     >
-                      <option value="" className="text-sm text-[#7f7f7f]" selected>
-                        សូមជ្រើសរើស ភូមិ
+                      <option
+                        disabled
+                        value=""
+                        className="text-sm text-[#7f7f7f]"
+                      >
+                        ជ្រើសរើសពីតារាង
                       </option>
                       {villages.length > 0
                         ? villages.map((province_city, index) => (
@@ -467,7 +506,7 @@ export default function MapClassification() {
                         : null}
                     </select>
                   </div>
-                  <div className="absolute top-3 right-2">
+                  <div className="absolute z-50 top-3 right-3 pointer-events-none">
                     <ChevronDown className="text-sky-[#1B3351] size-5" />
                   </div>
                 </div>
@@ -477,7 +516,8 @@ export default function MapClassification() {
         </div>
       </div>
 
-      <div className="flex-1 h-screen m-auto w-full"
+      <div
+        className="flex-1 h-screen m-auto w-full"
         style={{ marginTop: "0.5em", boxShadow: "0px 0px 2px rgba(0,0,0,0.3)" }}
       >
         <div
@@ -493,14 +533,12 @@ export default function MapClassification() {
 
             <div className="min-h-screen">
               <footer className="h-[67vh]">
-                <div className="absolute top-[3.7em] z-50 right-2.5">
-                {/* {showButton && <button>Button</button>} */}
-                  {
-                    showButton && 
+                <div className="absolute top-[0.6em] z-50 right-2.5">
+                  {showButton && (
                     <div className="flex flex-col space-y-2.5">
                       <button
                         onClick={toggleFullScreen}
-                        className={`p-2.5 cursor-pointer font-semibold rounded-sm shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition ease-in-out duration-150 text-black text-sm  bg-[#2479E9] uppercase`}
+                        className={`p-2.5 cursor-pointer font-semibold rounded-sm shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition ease-in-out duration-150 text-black text-sm  bg-[#79B971] uppercase`}
                       >
                         {isTableVisible ? (
                           <div className="flex">
@@ -537,8 +575,7 @@ export default function MapClassification() {
                         </div>
                       </button>
                     </div>
-                  }
-                  
+                  )}
                 </div>
                 <div className="w-full mb-2 flex flex-col">
                   <MapAPIs pointer={pointer} />

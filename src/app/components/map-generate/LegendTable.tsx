@@ -73,18 +73,18 @@ const LegendTable: React.FC<LegendTableProps> = ({ legendData }) => {
         className="shadow-md rounded-lg absolute overflow-scroll top-7 opacity-90 z-50 transition-all duration-500"
         style={{ width: "85%" }}
       >
-        <div className="">
+        <div>
           <table
             ref={tableRef}
-            className="table-custom rounded-sm table-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-red-900 scrollbar-track-red-100"
-            style={{ width: "100%", tableLayout: "fixed" }}
+            className="table-custom rounded-sm table-auto overflow-y-scroll  scrollbar-thin scrollbar-thumb-red-900 scrollbar-track-red-100"
+            style={{ width: "100%", height: "18em", tableLayout: "fixed" }}
           >
             <thead className="bg-[#1B3351] text-white">
               <tr className="">
                 {columnHeaders.map((header, index) => (
                   <th
                     key={index}
-                    className={`relative group font-normal border px-4 py-2 text-sm ${index === 15? 'w-52': 'w-40' }`}
+                    className={`relative group font-normal border px-4 py-2 text-sm ${index === 15? 'w-96': 'w-40' }`}
                   >
                     <span>{header}</span>
                     <div className="resize-bar absolute right-0 top-0 h-full w-2 cursor-col-resize bg-white opacity-0 group-hover:opacity-100"></div>

@@ -39,7 +39,6 @@ table tr th, td, select, span, label {
   z-index: 9999;
 }
 
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;

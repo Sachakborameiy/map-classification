@@ -286,17 +286,17 @@ export default function MapClassification() {
   };
 
   const handleSelectClickD = (event:any) => {
-    setActiveSelectProvince(true);
-    setActiveSelectDistrict(true);
-    setActiveSelectCommune(true);
-    setActiveSelectVillage(true);
-  
     const value = event.target.value;
+
     if (value) {
-      setActiveSelectVillage(value);
+      setSelectedVillage(value); 
       setActiveSelectVillage(true);
+      setActiveSelectCommune(true);
+      setActiveSelectProvince(true);
+      setActiveSelectDistrict(true);
+      
     } else {
-      setActiveSelectVillage(false);
+      setActiveSelectVillage(false);       
     }
   };
 

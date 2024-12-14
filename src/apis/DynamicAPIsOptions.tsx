@@ -21,7 +21,6 @@ const DynamicAPIsOptions = () => {
             <h1>{options}</h1>
         </div>
     );
-}
     </div>
   )
 }

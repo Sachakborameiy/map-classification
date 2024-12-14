@@ -13,6 +13,7 @@ import { fetchData } from "../../../util";
 import MapAPIs from "@/app/components/map-generate/page";
 import LegendTable from "@/app/components/map-generate/LegendTable";
 import exportToExcel from "@/app/components/map-generate/exportToexcel";
+import { useRouter } from "next/navigation";
 interface ProvinceCity {
   name: string;
 }
@@ -43,6 +44,8 @@ export default function MapClassification() {
     lng: 104.92802533397543,
     lat: 11.556608470019766,
   });
+  
+  const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const baseProtocol = process.env.NEXT_PUBLIC_PROTOCOL;
 
@@ -300,8 +303,15 @@ export default function MapClassification() {
     }
   };
 
+  const handleImportData = () => {
+		router.push("/input-data-book");
+	}
+
+
+
   return (
     <main className="bg-white flex flex-col m-auto fixed w-full">
+  
       <div
         className="flex-1 bg-[#f5f5f5] h-[10vh] rounded-md w-full sh m-auto p-2 pl-5"
         style={{ marginTop: "0.5em", boxShadow: "0px 0px 4px rgba(0,0,0,0.3)" }}
@@ -312,209 +322,224 @@ export default function MapClassification() {
       </div>
 
       <div
-        className="flex-1 rounded-md mt-2 h-[19vh] w-full m-auto"
+        className="flex-1 rounded-md  mt-2 h-[19vh] w-full m-auto"
         style={{
           border: "1px solid #eee",
           boxShadow: "0px 0px 2px rgba(0,0,0,0.3)",
         }}
       >
-        <div
-          className="ml-2"
-          style={{ fontFamily: "MyFont, sans-serif", maxWidth: "30rem" }}
-        >
-          <div className="mt-2">
-            <div className=" rounded-lg p-0.5 pl-4">
-              <div className="flex">
-                <div className="mt-3 w-[25%]">
-                  <label className="block font-semibold text-sm">ខេត្ត/រាជធានី</label>
-                </div>
-                <div className="w-[75%] relative">
-                  <div>
-                    <select
-                      className={`w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none`}
-                      id="province_city"
-                      name="province_city"
-                      value={selectedProvince}
-                      onChange={(event) => {
-                        setSelectedProvince(event.target.value);
-                        setShouldRunEffect(true);
-                        setActiveSelectDistrict(event.target.value !== '');
-                      }}
-                      onClick={handleSelectClickA}
-                      style={{
-                        border: activeSelectProvince
-                          ? "1px solid #64d1ff"
-                          : "1px solid #CCC",
-                      }}
-                    >
-                      <option 
-                        disabled value="" 
-                        className="text-sm font-extralight text-[#7f7f7f]">
-                        ជ្រើសរើសពីតារាង
-                      </option>
-                      {provinces.map((province_city, index) => (
-                        <option key={index} value={province_city.name.split("*")[0]}>
-                          {province_city.name.split("*")[0]}
+        <div className="flex justify-between ">
+          <div
+            className="ml-2 w-[18%]"
+            style={{ fontFamily: "MyFont, sans-serif" }}
+          >
+            <div className="my-2">
+              <div className=" rounded-lg p-0.5 pl-4">
+                <div className="flex">
+                  <div className="mt-3 w-[28%]">
+                    <label className="block font-semibold text-sm">ខេត្ត/រាជធានី</label>
+                  </div>
+                  <div className="w-[72%] relative">
+                    <div>
+                      <select
+                        className={`w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none`}
+                        id="province_city"
+                        name="province_city"
+                        value={selectedProvince}
+                        onChange={(event) => {
+                          setSelectedProvince(event.target.value);
+                          setShouldRunEffect(true);
+                          setActiveSelectDistrict(event.target.value !== '');
+                        }}
+                        onClick={handleSelectClickA}
+                        style={{
+                          border: activeSelectProvince
+                            ? "1px solid #64d1ff"
+                            : "1px solid #CCC",
+                        }}
+                      >
+                        <option 
+                          disabled value="" 
+                          className="text-sm font-extralight text-[#7f7f7f]">
+                          ជ្រើសរើសពីតារាង
                         </option>
-                      ))}
-                    </select>
+                        {provinces.map((province_city, index) => (
+                          <option key={index} value={province_city.name.split("*")[0]}>
+                            {province_city.name.split("*")[0]}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="absolute z-50 top-3 right-3 pointer-events-none">
+                        <ChevronDown className="text-[#1B3351]" size={20} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex">
+                  <div className="mt-1 w-[28%]">
+                    <label className="block font-semibold text-sm pb-2">ស្រុក/ក្រុង/ខណ្ខ</label>
+                  </div>
+                  <div
+                    className="w-[72%] relative"
+                    style={{ marginTop: "-0.5em" }}
+                  >
+                    <div>
+                      <select
+                        value={selectedDistrict}
+                        onChange={(event) => {
+                          setSelectedDistrict(event.target.value);
+                          setShouldRunEffect(true);
+                        }}
+                        onClick={handleSelectClickB}
+                        disabled={!districtEnabledDropdown}
+                        className="w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none"
+                        style={{
+                          border: activeSelectDistrict
+                            ? "1px solid #64d1ff"
+                            : "1px solid #CCC",
+                        }}
+                      >
+                        <option
+                          disabled value=""
+                          className="text-sm text-[#7f7f7f]"
+                        >
+                          ជ្រើសរើសពីតារាង
+                        </option>
+                        {districts.length > 0
+                          ? districts.map((province_city, index) => (
+                              <option
+                                key={index}
+                                value={province_city.name.split("*")[0]}
+                              >
+                                {province_city.name.split("*")[0]}
+                              </option>
+                            ))
+                          : null}
+                      </select>
+                    </div>
                     <div className="absolute z-50 top-3 right-3 pointer-events-none">
-                      <ChevronDown className="text-[#1B3351]" size={20} />
+                      <ChevronDown className="text-sky-[#1B3351] size-5" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex">
+                  <div className="mt-1 w-[28%]">
+                    <label className="block font-semibold text-sm pb-2">ឃុំ/សង្កាត់</label>
+                  </div>
+                  <div
+                    className="w-[72%] relative"
+                    style={{ marginTop: "-0.5em" }}
+                  >
+                    <div>
+                      <select
+                        value={selectedCommune}
+                        onChange={(event) => {
+                          setSelectedCommune(event.target.value);
+                          setShouldRunEffect(true);
+                        }}
+                        onClick={handleSelectClickC}
+                        disabled={!communeEnableDropdown}
+                        className="w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none"
+                        style={{
+                          border: activeSelectCommune
+                            ? "1px solid #64d1ff"
+                            : "1px solid #CCC",
+                        }}
+                      >
+                        <option
+                          disabled
+                          value=""
+                          className={`text-sm text-[#7f7f7f]`}
+                        >
+                          ជ្រើសរើសពីតារាង
+                        </option>
+                        {communes.length > 0
+                          ? communes.map((province_city, index) => (
+                              <option
+                                key={index}
+                                value={province_city.name.split("*")[0]}
+                              >
+                                {province_city.name.split("*")[0]}
+
+                              </option>
+                            ))
+                          : null}
+                      </select>
+                    </div>
+                    <div className="absolute  top-3 right-3 pointer-events-none">
+                      <ChevronDown className="text-sky-[#1B3351] size-5" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex">
+                  <div className="mt-1 w-[28%]">
+                    <label className="block font-semibold text-sm pb-2">ភូមិ</label>
+                  </div>
+                  <div
+                    className="w-[72%] relative"
+                    style={{ marginTop: "-0.5em" }}
+                  >
+                    <div>
+                      <select
+                        value={selectedVillage}
+                        onChange={(event) => {
+                          setSelectedVillage(event.target.value);
+                          setShouldRunEffect(true);
+                        }}
+                        onClick={handleSelectClickD}
+                        disabled={!villageEnabledDropdown}
+                        className="w-full p-2 mb-2 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none"
+                        style={{
+                          border: activeSelectVillage
+                            ? "1px solid #64d1ff"
+                            : "1px solid #CCC",
+                        }}
+                      >
+                        <option
+                          disabled
+                          value=""
+                          className="text-sm text-[#7f7f7f]"
+                        >
+                          ជ្រើសរើសពីតារាង
+                        </option>
+                        {villages.length > 0
+                          ? villages.map((province_city, index) => (
+                              <option
+                                key={index}
+                                value={province_city.name.split("*")[0]}
+                              >
+                                {province_city.name.split("*")[0]}
+                              </option>
+                            ))
+                          : null}
+                      </select>
+                    </div>
+                    <div className="absolute z-50 top-3 right-3 pointer-events-none">
+                      <ChevronDown className="text-sky-[#1B3351] size-5" />
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div className="flex">
-                <div className="mt-1 w-[25%]">
-                  <label className="block font-semibold text-sm pb-2">ស្រុក/ក្រុង/ខណ្ខ</label>
-                </div>
-                <div
-                  className="w-[75%] relative"
-                  style={{ marginTop: "-0.5em" }}
-                >
-                  <div>
-                    <select
-                      value={selectedDistrict}
-                      onChange={(event) => {
-                        setSelectedDistrict(event.target.value);
-                        setShouldRunEffect(true);
-                      }}
-                      onClick={handleSelectClickB}
-                      disabled={!districtEnabledDropdown}
-                      className="w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none"
-                      style={{
-                        border: activeSelectDistrict
-                          ? "1px solid #64d1ff"
-                          : "1px solid #CCC",
-                      }}
-                    >
-                      <option
-                        disabled value=""
-                        className="text-sm text-[#7f7f7f]"
-                      >
-                        ជ្រើសរើសពីតារាង
-                      </option>
-                      {districts.length > 0
-                        ? districts.map((province_city, index) => (
-                            <option
-                              key={index}
-                              value={province_city.name.split("*")[0]}
-                            >
-                              {province_city.name.split("*")[0]}
-                            </option>
-                          ))
-                        : null}
-                    </select>
-                  </div>
-                  <div className="absolute z-50 top-3 right-3 pointer-events-none">
-                    <ChevronDown className="text-sky-[#1B3351] size-5" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex">
-                <div className="mt-1 w-[25%]">
-                  <label className="block font-semibold text-sm pb-2">ឃុំ/សង្កាត់</label>
-                </div>
-                <div
-                  className="w-[75%] relative"
-                  style={{ marginTop: "-0.5em" }}
-                >
-                  <div>
-                    <select
-                      value={selectedCommune}
-                      onChange={(event) => {
-                        setSelectedCommune(event.target.value);
-                        setShouldRunEffect(true);
-                      }}
-                      onClick={handleSelectClickC}
-                      disabled={!communeEnableDropdown}
-                      className="w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none"
-                      style={{
-                        border: activeSelectCommune
-                          ? "1px solid #64d1ff"
-                          : "1px solid #CCC",
-                      }}
-                    >
-                      <option
-                        disabled
-                        value=""
-                        className={`text-sm text-[#7f7f7f]`}
-                      >
-                        ជ្រើសរើសពីតារាង
-                      </option>
-                      {communes.length > 0
-                        ? communes.map((province_city, index) => (
-                            <option
-                              key={index}
-                              value={province_city.name.split("*")[0]}
-                            >
-                              {province_city.name.split("*")[0]}
-
-                            </option>
-                          ))
-                        : null}
-                    </select>
-                  </div>
-                  <div className="absolute  top-3 right-3 pointer-events-none">
-                    <ChevronDown className="text-sky-[#1B3351] size-5" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex">
-                <div className="mt-1 w-[25%]">
-                  <label className="block font-semibold text-sm pb-2">ភូមិ</label>
-                </div>
-                <div
-                  className="w-[75%] relative"
-                  style={{ marginTop: "-0.5em" }}
-                >
-                  <div>
-                    <select
-                      value={selectedVillage}
-                      onChange={(event) => {
-                        setSelectedVillage(event.target.value);
-                        setShouldRunEffect(true);
-                      }}
-                      onClick={handleSelectClickD}
-                      disabled={!villageEnabledDropdown}
-                      className="w-full p-2 mb-2 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none"
-                      style={{
-                        border: activeSelectVillage
-                          ? "1px solid #64d1ff"
-                          : "1px solid #CCC",
-                      }}
-                    >
-                      <option
-                        disabled
-                        value=""
-                        className="text-sm text-[#7f7f7f]"
-                      >
-                        ជ្រើសរើសពីតារាង
-                      </option>
-                      {villages.length > 0
-                        ? villages.map((province_city, index) => (
-                            <option
-                              key={index}
-                              value={province_city.name.split("*")[0]}
-                            >
-                              {province_city.name.split("*")[0]}
-                            </option>
-                          ))
-                        : null}
-                    </select>
-                  </div>
-                  <div className="absolute z-50 top-3 right-3 pointer-events-none">
-                    <ChevronDown className="text-sky-[#1B3351] size-5" />
-                  </div>
-                </div>
-              </div>
             </div>
+
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              onClick={handleImportData}
+              className="bg-[#1B3351] p-2 rounded-md text-white px-2 mx-2 my-2 shadow-md hover:shadow-lg hover:bg-[#152942] text-sm"
+            >
+              បញ្ចូលទិន្នន័យថ្មី
+            </button>
           </div>
         </div>
+
       </div>
+
 
       <div
         className="flex-1 h-screen m-auto w-full"
@@ -585,6 +610,8 @@ export default function MapClassification() {
           </div>
         </div>
       </div>
+
+      
     </main>
   );
 }

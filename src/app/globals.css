@@ -19,16 +19,21 @@
 body {
   color: rgb(var(--foreground-rgb));
   font-family: "Krasar",Arial, sans-serif;
-  background: white;
+  background: #f5f5f5;
   }
   
 h2 {
   font-family: "Krasar";
 }
 
-table tr th, td, select, span, label {
+textarea, input, button, table tr th, td, select, span, label {
   font-family: "Krasar-Regular";
 }
+
+.input-field {
+  @apply w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:ring-blue-300;
+}
+
 
 .fullscreen {
   position: fixed !important;
@@ -61,10 +66,6 @@ table tr th, td, select, span, label {
   src: url("./components/fonts/otf/Krasar-Regular.otf");
 }
 
-/* .custom-width {
-  width: 700px !important;
-} */
-
 .break-hyphen {
   display: block;
   white-space: pre;
@@ -92,16 +93,16 @@ table tr th, td, select, span, label {
 /* Scrollbar Override */
 table .table-custom .scroll-inner {
 	&::-webkit-scrollbar {
-		width: 10px;
+		width: 5px;
 	}
 	&::-webkit-scrollbar:horizontal {
-		height: 10px;
+		height: 5px;
 	}
 	&::-webkit-scrollbar-track {
 		background-color: transparentize(#ccc, 0.7);
 	}
 	&::-webkit-scrollbar-thumb {
-		border-radius: 10px;
+		border-radius: 5px;
 		background: transparentize(#ccc, 0.5);
 		box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 	}
@@ -142,27 +143,21 @@ td{
   background-color: var(--secondary);
   border-radius: 14px;
   border: 3px solid var(--primary);
-  /* border-bottom-left-radius: 7px;
-  border-bottom-right-radius: 7px; */
 }
 
 *::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
-  /* border-bottom-left-radius: 7px;
-  border-bottom-right-radius: 7px; */
   background-color: #F5F5F5;
 }
 
 *::-webkit-scrollbar {
   width: 6px;
-  height: 0.5em;
+  height: 0.4em;
   background-color: #F5F5F5;
 }
 
 *::-webkit-scrollbar-thumb {
-  /* border-bottom-left-radius: 7px;
-  border-bottom-right-radius: 7px; */
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
   background-color: #1B3351;

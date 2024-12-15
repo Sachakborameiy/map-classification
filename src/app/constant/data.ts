@@ -147,3 +147,127 @@ export const sampleData = [
         "C3": "40", "R1": "20", "R2": "25", "R3": "45", "I1": "15", "I2": "18", "I3": "22", "A1": "60", "A2": "70", "A3": "80"
     }
 ];
+
+export const columnHeaders = [
+    "ខេត្ត/រាជធានី",
+    "កូដ ខេត្ត/រាជធានី",
+    "សាខា",
+    "កូដ សាខា",
+    "ស្រុក/ខណ្ឌ/ក្រុង",
+    "កូដ ស្រុក/ខណ្ឌ/ក្រុង",
+    "ឃុំ/សង្កាត់",
+    "កូដ ឃុំ/សង្កាត់",
+    "ភូមិ",
+    "កូដ ភូមិ",
+    "លេខទូរស័ព្ទ ឃុំ/សង្កាត់",
+    "លេខទូរស័ព្ទ មេភូមិ",
+    "ចំនួន គ្រួសារ",
+    "L-Map (ភាគរយ)",
+    "ចំណាត់ថ្នាក់",
+    "កម្រិតទីតាំង",
+    "ដីពាណិជ្ជកម្ម C1",
+    "ដីពាណិជ្ជកម្ម C2",
+    "ដីពាណិជ្ជកម្ម C3",
+    "ដីលំនៅឋាន R1",
+    "ដីលំនៅឋាន R2",
+    "ដីលំនៅឋាន R3",
+    "ដីឧស្សាហកម្ម I1",
+    "ដីឧស្សាហកម្ម I2",
+    "ដីឧស្សាហកម្ម I3",
+  ];
+
+// Location Sample Data
+
+// data.ts
+
+export const provinceCity = {
+    "Phnom Penh": {
+      districts: [
+        { name: "Chamkarmon", communes: ["Boeng Keng Kang", "Toul Kork"] },
+        { name: "Daun Penh", communes: ["Phsar Thmei", "Chey Chumneas"] },
+        { name: "Sangkat Ou Ruessei", communes: ["Toul Svay Prey", "Sangkat Ou Ruessei"] },
+      ],
+    },
+    "Siem Reap": {
+      districts: [
+        { name: "Siem Reap", communes: ["Sangkat Svay Dangkum", "Sangkat Russei", "Sangkat Sala Kamraeuk"] },
+        { name: "Puok", communes: ["Sangkat Chreav", "Sangkat Kouk Roka"] },
+      ],
+    },
+    "Battambang": {
+      districts: [
+        { name: "Battambang", communes: ["Sangkat Rattanak", "Sangkat Phnom Sampov"] },
+        { name: "Moung Ruessei", communes: ["Sangkat Phsar", "Sangkat Krang"] },
+      ],
+    },
+  };
+  
+  export const districtKhanKrong = {
+    "Chamkarmon": {
+      communes: ["Boeng Keng Kang", "Toul Kork"],
+    },
+    "Daun Penh": {
+      communes: ["Phsar Thmei", "Chey Chumneas"],
+    },
+    "Siem Reap": {
+      communes: ["Sangkat Svay Dangkum", "Sangkat Russei", "Sangkat Sala Kamraeuk"],
+    },
+    "Battambang": {
+      communes: ["Sangkat Phnom Sampov", "Sangkat Rattanak"],
+    },
+  };
+  
+  export const communeSangkat = {
+    "Boeng Keng Kang": {
+      villages: ["Village 1", "Village 2", "Village 3"],
+    },
+    "Toul Kork": {
+      villages: ["Village 4", "Village 5", "Village 6"],
+    },
+    "Sangkat Svay Dangkum": {
+      villages: ["Village 7", "Village 8", "Village 9"],
+    },
+    "Sangkat Phnom Sampov": {
+      villages: ["Village 10", "Village 11", "Village 12"],
+    },
+  };
+  
+  export const village = {
+    "Village 1": {
+      details: "Details for Village 1",
+    },
+    "Village 2": {
+      details: "Details for Village 2",
+    },
+    "Village 3": {
+      details: "Details for Village 3",
+    },
+    "Village 4": {
+      details: "Details for Village 4",
+    },
+    "Village 5": {
+      details: "Details for Village 5",
+    },
+    "Village 6": {
+      details: "Details for Village 6",
+    },
+    "Village 7": {
+      details: "Details for Village 7",
+    },
+    "Village 8": {
+      details: "Details for Village 8",
+    },
+    "Village 9": {
+      details: "Details for Village 9",
+    },
+    "Village 10": {
+      details: "Details for Village 10",
+    },
+    "Village 11": {
+      details: "Details for Village 11",
+    },
+    "Village 12": {
+      details: "Details for Village 12",
+    },
+  };
+  

@@ -14,6 +14,7 @@ import MapAPIs from "@/app/components/map-generate/page";
 import LegendTable from "@/app/components/map-generate/LegendTable";
 import exportToExcel from "@/app/components/map-generate/exportToexcel";
 import { useRouter } from "next/navigation";
+import Title from "../components/custom/header-title";
 interface ProvinceCity {
   name: string;
 }
@@ -312,14 +313,7 @@ export default function MapClassification() {
   return (
     <main className="bg-white flex flex-col m-auto fixed w-full">
   
-      <div
-        className="flex-1 bg-[#f5f5f5] h-[10vh] rounded-md w-full sh m-auto p-2 pl-5"
-        style={{ marginTop: "0.5em", boxShadow: "0px 0px 4px rgba(0,0,0,0.3)" }}
-      >
-        <span className="text-[#428BCA] font-normal text-[20px]">
-          Land Classification Book
-        </span>
-      </div>
+      <Title/>
 
       <div
         className="flex-1 rounded-md  mt-2 h-[19vh] w-full m-auto"
@@ -491,7 +485,7 @@ export default function MapClassification() {
                         }}
                         onClick={handleSelectClickD}
                         disabled={!villageEnabledDropdown}
-                        className="w-full p-2 mb-2 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none"
+                        className="dropdown-global"
                         style={{
                           border: activeSelectVillage
                             ? "1px solid #64d1ff"

@@ -34,6 +34,14 @@ textarea, input, button, table tr th, td, select, span, label {
   @apply w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:ring-blue-300;
 }
 
+.input-global {
+  @apply block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-[#1B3351] sm:text-sm/6;
+}
+
+.dropdown-global {
+  @apply w-full p-2 mb-1 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md;
+}
+
 
 .fullscreen {
   position: fixed !important;
@@ -212,5 +220,8 @@ td {
 }
 
 /* end table map list  */
+
+
+
 
 

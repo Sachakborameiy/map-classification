@@ -8,19 +8,24 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
+import { Send, Undo2 } from "lucide-react";
 
 interface ShowModalProps {
   showModal: boolean;
-  message: string | null;
   closeModal: () => void;
   sampleData: any[];
-  columnHeaders: string[];
+  columnHeaders: { label: string; key: string }[];
 }
 
-const ShowModal: React.FC<ShowModalProps> = ({ showModal, closeModal, sampleData, columnHeaders }) => {
+const ShowModal: React.FC<ShowModalProps> = ({
+  showModal,
+  closeModal,
+  sampleData,
+  columnHeaders,
+}) => {
   const { isOpen, onOpenChange } = useDisclosure({
     isOpen: showModal,
-    onClose: closeModal, // Close modal when clicking outside
+    onClose: closeModal,
   });
 
   return (
@@ -29,10 +34,13 @@ const ShowModal: React.FC<ShowModalProps> = ({ showModal, closeModal, sampleData
       onOpenChange={onOpenChange}
       className="z-50"
       placement="center"
-      closeButton={false} 
+      closeButton={false}
     >
       {/* Black Overlay */}
-      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40" onClick={closeModal}></div>
+      <div
+        className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40"
+        onClick={closeModal}
+      ></div>
 
       <ModalContent className="relative w-[95%] max-h-[140vh] rounded-lg shadow-xl bg-white">
         {(onClose) => (
@@ -54,7 +62,7 @@ const ShowModal: React.FC<ShowModalProps> = ({ showModal, closeModal, sampleData
                           key={index}
                           className="px-4 py-2 border-b border-gray-300 text-left text-sm font-semibold text-gray-700"
                         >
-                          {header}
+                          {header.label}
                         </th>
                       ))}
                     </tr>
@@ -64,13 +72,17 @@ const ShowModal: React.FC<ShowModalProps> = ({ showModal, closeModal, sampleData
                   <tbody>
                     {sampleData.length > 0 ? (
                       sampleData.map((row, rowIndex) => (
-                        <tr key={rowIndex} className="hover:bg-gray-50 transition-colors">
+                        <tr
+                          key={rowIndex}
+                          className="hover:bg-gray-50 transition-colors"
+                        >
                           {columnHeaders.map((header, colIndex) => (
                             <td
                               key={colIndex}
                               className="px-4 py-2 border-b border-gray-200 text-sm text-gray-600"
+                              title={row[header.key] || "-"} // Tooltip for better visibility of the data
                             >
-                              {row[header.replace(/ /g, "_")] || "N/A"}
+                              {row[header.key] || "-"}
                             </td>
                           ))}
                         </tr>
@@ -95,20 +107,33 @@ const ShowModal: React.FC<ShowModalProps> = ({ showModal, closeModal, sampleData
               <Button
                 color="danger"
                 onPress={onClose}
-                className="bg-gray-600 rounded-md text-white px-6 py-3 m-2 shadow-md hover:bg-gray-700 focus:outline-none text-sm transition-all duration-200"
+                className="bg-gray-600 rounded-md text-white px-3 py-3 m-2 shadow-md hover:bg-gray-700 focus:outline-none text-sm transition-all duration-200"
               >
-                ត្រឡប់ក្រោយ
+                <div className="flex gap-1">
+                    <div>
+                      <Undo2 className="w-5 h-5"/>
+                    </div>
+                    <div>
+                      ត្រឡប់ក្រោយ
+                    </div>
+                </div>
               </Button>
               <Button
                 color="primary"
                 onPress={onClose}
                 type="submit"
-                className="bg-[#1B3351] rounded-md text-white px-6 py-3 m-2 shadow-md hover:bg-[#152942] focus:outline-none text-sm transition-all duration-200"
+                className="bg-[#1B3351] rounded-md text-white px-3 py-3 m-2 shadow-md hover:bg-[#152942] focus:outline-none text-sm transition-all duration-200"
               >
-                បញ្ចូនទិន្នន័យ
+                <div className="flex gap-1">
+                    <div>
+                      <Send className="w-5 h-5"/>
+                    </div>
+                    <div>
+                      បញ្ចូនទិន្នន័យ
+                    </div>
+                </div>
               </Button>
             </ModalFooter>
-
           </>
         )}
       </ModalContent>

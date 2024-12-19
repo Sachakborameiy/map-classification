@@ -1,5 +1,5 @@
 "use client";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, EyeIcon, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -17,19 +17,34 @@ export default function FormPage() {
 	const [message, setMessage] = useState<string | null>(null);
 
 	const [inputs, setInputs] = useState({
-		branches: "",
-		branch_code: "",
-		province_city: "",
-		district_khan_krong: "",
-		commune_sangket: "",
-		village: "",
+		branches: "borameimme",
+		branch_code: "borameimme",
+		province_city: "borameimme",
+		province_city_code: "borameimme",
+		district_khan_krong: "borameimme",
+		district_khan_krong_code: "borameimme",
+		commune_sangket: "borameimme",
+		commune_sangket_code: "borameimme",
+		village: "borameimme",
+		village_code: "borameimme",
 		phone_commune_sangket: "",
 		phone_village_chief: "",
 		num_family: "",
 		L_Map_percentage: "",
 		class: "",
 		level_location: "",
-	});
+		A1: "",
+		A2: "",
+		A3: "",
+		C1: "",
+		C2: "",
+		C3: "",
+		R1: "",
+		R2: "",
+		R3: "",
+		I1: "",
+		I2: "",
+		I3: "",	});
 
 	// Start Dropdown
 	const [locationOptions, setLocationOptions] = useState<{
@@ -157,6 +172,14 @@ export default function FormPage() {
 		}));
 	};
 
+	const handleInputChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+		const { name, value } = e.target;
+		setInputs((prevInputs) => ({
+		  ...prevInputs,
+		  [name]: value,
+		}));
+	  };
+
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
@@ -164,23 +187,7 @@ export default function FormPage() {
 
 		const updatedData = [...data, inputs];
 		setData(updatedData);
-
 		localStorage.setItem('dataList', JSON.stringify(updatedData));
-
-		setInputs({
-			branch: "",
-			branch_code: "",
-			province_city: "",
-			district_khan_krong: "",
-			commune_sangket: "",
-			village: "",
-			phone_commune_sangket: "",
-			phone_village_chief: "",
-			num_family: "",
-			L_Map_percentage: "",
-			class: "",
-			level_location: "",
-		});
 		setErrors({});
 	};
 
@@ -196,42 +203,87 @@ export default function FormPage() {
 		localStorage.setItem("dataList", JSON.stringify(updatedData));
 	};
 
+	const handleClear = () => {
+		setInputs({
+		  branches: "",
+		  branch_code: "",
+		  province_city: "",
+		  province_city_code: "",
+		  district_khan_krong: "",
+		  district_khan_krong_code: "",
+		  commune_sangket: "",
+		  commune_sangket_code: "",
+		  village: "",
+		  village_code: "",
+		  phone_commune_sangket: "",
+		  phone_village_chief: "",
+		  num_family: "",
+		  L_Map_percentage: "",
+		  class: "",
+		  level_location: "",
+		  A1: "",
+		  A2: "",
+		  A3: "",
+		  C1: "",
+		  C2: "",
+		  C3: "",
+		  R1: "",
+		  R2: "",
+		  R3: "",
+		  I1: "",
+		  I2: "",
+		  I3: "",
+		});
+	};
+
 	return (
 		<div className="g-white flex flex-col m-auto fixed w-full">
 			<Title />
 			<div className="bg-white shadow-md py-0 w-full h-full overflow-auto">
 				<div className="bg-white border-l-2 border-r-2 border-t-2 shadow-md rounded-sm p-2 w-full overflow-auto">
-					<form onSubmit={handleSubmit} className="space-y-2 py-2 pt-0">
-						<div className="flex justify-between items-center">
-							<button
-								type="reset"
-								onClick={handleBack}
-								className="bg-gray-500 py-2 px-4 rounded-md shadow-lg text-white hover:bg-gray-700 hover:shadow-xl transition-all text-sm"
-							>
-								<ArrowLeft className="h-5 w-5" />
-							</button>
+					<form onSubmit={handleSubmit} className="space-y-2 pt-0">
+						<div className="items-center">
+							
 
-							<div className="flex justify-end space-x-3">
+							<div className="flex justify-end space-x-2">
 								<button
 									type="submit"
-									className="bg-[#0f81c3] text-white py-2 px-4 rounded-md shadow-lg hover:bg-[#3578b6] hover:shadow-xl transition-all text-sm"
+									className="bg-[#0b9c54] outline-none text-white py-2 px-4 rounded-md shadow-lg hover:bg-[#0DAF5E] hover:shadow-xl transition-all text-sm"
 								>
-									បន្ថែម
+									<div className="flex justify-between gap-1">
+										<div>
+											<Plus className="w-4 h-4"/>
+										</div>
+										<div>
+											<span>បន្ថែម</span>
+										</div>
+									</div>
 								</button>
 
 								<button
 									type="submit"
 									onClick={handlePreviewClick}
-									className="bg-[#1B3351] text-white py-2 px-4 rounded-md shadow-lg hover:bg-[#152942] hover:shadow-xl transition-all text-sm"
+									className="bg-[#1B3351] outline-none text-white py-2 px-4 rounded-md shadow-lg hover:bg-[#1e3e66] hover:shadow-xl transition-all text-sm"
 								>
-									មើលបញ្ជាក់
+									<EyeIcon className="w-4 h-4"/>
+								</button>
+
+								<button
+									type="button"
+									onClick={handleClear}
+									className="bg-[#FF5733] outline-none text-white py-1 px-2 rounded-md shadow-lg hover:bg-[#E04E2E] hover:shadow-xl transition-all text-sm"
+									title="Clear data in input fields"
+								>
+									<Trash2 className="w-4 h-w-4" />
 								</button>
 
 								<button
 									type="reset"
-									className="bg-[#FF5733] text-white py-2 px-4 rounded-md shadow-lg hover:bg-[#E04E2E] hover:shadow-xl transition-all text-sm"
+									onClick={handleBack}
+									className="bg-[#0f81c3] outline-none text-white py-2 px-4 rounded-md shadow-lg hover:bg-[#2c6294] hover:shadow-xl transition-all text-sm"
+									title="Back to land classification screen"
 								>
-									លុប
+									<ArrowLeft className="h-5 w-5" />
 								</button>
 							</div>
 
@@ -240,16 +292,16 @@ export default function FormPage() {
 
 
 						{/* Location Information */}
-						<div className="grid grid-cols-12 gap-4">
+						<div className="grid grid-cols-12 gap-2">
 
 							<div className="col-span-6 flex flex-col">
-								<fieldset className="border border-gray-300 rounded-lg px-1 py-2 pt-0 md:px-4 bg-white shadow-sm">
+								<fieldset className="border border-gray-300 rounded-lg px-1 py-3 pt-0 md:px-2 bg-white shadow-md sm:rounded-lg">
 									<legend className="text-base font-semibold text-[#1B3351] px-4">ទីតាំង</legend>
-									<div className="grid grid-cols-1 md:grid-cols-12 rounded-md gap-6 p-1">
+									<div className="grid grid-cols-1 md:grid-cols-12 rounded-md gap-4 py-0 px-1">
 										{/* Left Section */}
-										<div className="col-span-1 md:col-span-6 grid grid-cols-1 md:grid-cols-6 gap-2">
+										<div className="col-span-1 md:col-span-6 grid grid-cols-1 md:grid-cols-6 gap-2 ">
 											{/* Row 1 */}
-											<div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-4">
+											<div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-2">
 												<div className="w-full md:flex-1">
 													<label htmlFor="province_city" className="text-sm font-medium text-[#1B3351]">
 														{fieldTitles.province_city}
@@ -259,7 +311,7 @@ export default function FormPage() {
 														name="province_city"
 														value={inputs.province_city}
 														onChange={(e) => handleLocationChange("province_city", e.target.value)}
-														className="w-full text-sm p-2 border shadow-sm rounded-md focus:outline-none focus:ring-1 focus:ring-[#1B3351]"
+														className="dropdown-global"
 													>
 														<option value="">ជ្រើសរើសតារាង</option>
 														{locationOptions.province_city?.map((option, index) => (
@@ -295,7 +347,7 @@ export default function FormPage() {
 														name="district_khan_krong"
 														value={inputs.district_khan_krong}
 														onChange={(e) => handleLocationChange("district_khan_krong", e.target.value)}
-														className="w-full text-sm p-2 border shadow-sm rounded-md focus:outline-none focus:ring-1 focus:ring-[#1B3351]"
+														className="dropdown-global"
 													>
 														<option value="">ជ្រើសរើសតារាង</option>
 														{locationOptions.district_khan_krong?.map((option, index) => (
@@ -394,9 +446,9 @@ export default function FormPage() {
 										</div>
 
 										{/* Right Section */}
-										<div className="col-span-1 md:col-span-6 grid grid-cols-1 md:grid-cols-6 gap-4">
+										<div className="col-span-1 md:col-span-6 grid grid-cols-1 md:grid-cols-6 gap-1">
 											{/* Branch Selection */}
-											<div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-6 mt-4 md:mt-16">
+											<div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-2 mt-16">
 												<div className="w-full md:flex-1">
 													<label htmlFor="province_city" className="text-sm font-medium text-[#1B3351]">
 														{fieldTitles.branch}
@@ -429,73 +481,71 @@ export default function FormPage() {
 													/>
 												</div>
 											</div>
-											
+
 											{/* Phone Inputs */}
-											<div className="col-span-1 md:col-span-6">
-												<div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-6 mt-4 md:mt-2">
-													<div>
-														<label htmlFor="phone_commune_sangket" className="text-sm font-medium text-[#1B3351]">
-															{fieldTitles.phone_commune_sangket}
-														</label>
-														<input
-															type="text"
-															id="phone_commune_sangket"
-															name="phone_commune_sangket"
-															value={inputs.phone_commune_sangket}
-															onChange={handleInputChange}
-															placeholder={`បញ្ចូល ${fieldTitles.phone_commune_sangket}`}
-															className="input-global"
-														/>
-														{errors.phone_commune_sangket && <span className="text-red-500 text-xs">{errors.phone_commune_sangket}</span>}
-													</div>
-													<div>
-														<label htmlFor="phone_commune_sangket" className="text-sm font-medium text-[#1B3351]">
-															ឈ្មោះ មេឃុំ/សង្កាត់
-														</label>
-														<input
-															type="text"
-															id="phone_village_chief"
-															name="phone_village_chief"
-															value={inputs.phone_village_chief}
-															onChange={handleInputChange}
-															placeholder={`បញ្ចូល ${fieldTitles.phone_village_chief}`}
-															className="input-global"
-														/>
-														{errors.phone_village_chief && <span className="text-red-500 text-xs">{errors.phone_village_chief}</span>}
-													</div>
+											<div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-2">
+												<div>
+													<label htmlFor="phone_commune_sangket" className="text-sm font-medium text-[#1B3351]">
+														{fieldTitles.phone_commune_sangket}
+													</label>
+													<input
+														type="text"
+														id="phone_commune_sangket"
+														name="phone_commune_sangket"
+														value={inputs.phone_commune_sangket}
+														onChange={handleInputChange}
+														placeholder={`បញ្ចូល ${fieldTitles.phone_commune_sangket}`}
+														className="input-global"
+													/>
+													{errors.phone_commune_sangket && <span className="text-red-500 text-xs">{errors.phone_commune_sangket}</span>}
 												</div>
-												
-												<div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-6 mt-4 md:mt-2">
-													<div>
-														<label htmlFor="phone_village_chief" className="text-sm font-medium text-[#1B3351]">
-															{fieldTitles.phone_village_chief}
-														</label>
-														<input
-															type="text"
-															id="phone_village_chief"
-															name="phone_village_chief"
-															value={inputs.phone_village_chief}
-															onChange={handleInputChange}
-															placeholder={`បញ្ចូល ${fieldTitles.phone_village_chief}`}
-															className="input-global"
-														/>
-														{errors.phone_village_chief && <span className="text-red-500 text-xs">{errors.phone_village_chief}</span>}
-													</div>
-													<div>
-														<label htmlFor="phone_commune_sangket" className="text-sm font-medium text-[#1B3351]">
-															ឈ្មោះ មេភូមិ
-														</label>
-														<input
-															type="text"
-															id="phone_village_chief"
-															name="phone_village_chief"
-															value={inputs.phone_village_chief}
-															onChange={handleInputChange}
-															placeholder={`បញ្ចូល ${fieldTitles.phone_village_chief}`}
-															className="input-global"
-														/>
-														{errors.phone_village_chief && <span className="text-red-500 text-xs">{errors.phone_village_chief}</span>}
-													</div>
+												<div>
+													<label htmlFor="phone_commune_sangket" className="text-sm font-medium text-[#1B3351]">
+														ឈ្មោះ មេឃុំ/សង្កាត់
+													</label>
+													<input
+														type="text"
+														id="phone_village_chief"
+														name="phone_village_chief"
+														value={inputs.phone_village_chief}
+														onChange={handleInputChange}
+														placeholder={`បញ្ចូល ឈ្មោះមេឃុំ/សង្កាត់`}
+														className="input-global"
+													/>
+													{errors.phone_village_chief && <span className="text-red-500 text-xs">{errors.phone_village_chief}</span>}
+												</div>
+											</div>
+
+											<div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-2">
+												<div>
+													<label htmlFor="phone_village_chief" className="text-sm font-medium text-[#1B3351]">
+														{fieldTitles.phone_village_chief}
+													</label>
+													<input
+														type="text"
+														id="phone_village_chief"
+														name="phone_village_chief"
+														value={inputs.phone_village_chief}
+														onChange={handleInputChange}
+														placeholder={`បញ្ចូល ${fieldTitles.phone_village_chief}`}
+														className="input-global"
+													/>
+													{errors.phone_village_chief && <span className="text-red-500 text-xs">{errors.phone_village_chief}</span>}
+												</div>
+												<div>
+													<label htmlFor="phone_commune_sangket" className="text-sm font-medium text-[#1B3351]">
+														ឈ្មោះ មេភូមិ
+													</label>
+													<input
+														type="text"
+														id="phone_village_chief"
+														name="phone_village_chief"
+														value={inputs.phone_village_chief}
+														onChange={handleInputChange}
+														placeholder={`បញ្ចូល ឈ្មោះមេភូមិ`}
+														className="input-global"
+													/>
+													{errors.phone_village_chief && <span className="text-red-500 text-xs">{errors.phone_village_chief}</span>}
 												</div>
 											</div>
 
@@ -506,7 +556,7 @@ export default function FormPage() {
 
 							{/* Family Information */}
 							<div className="col-span-6 flex flex-col">
-								<fieldset className="border border-gray-300 rounded-lg pt-2 px-4 pb-4">
+								<fieldset className="border border-gray-300 rounded-lg pt-2 px-4 pb-4 shadow-md sm:rounded-lg">
 									<legend className="text-sm font-semibold text-[#1B3351] px-2">ព័ត៌មានគ្រួសារ</legend>
 
 									<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -579,7 +629,7 @@ export default function FormPage() {
 							{/* Type Land */}
 						</div>
 						<div>
-							<fieldset className="w-full border border-gray-300 rounded-lg pt-2 px-4 pb-4">
+							<fieldset className="w-full border border-gray-300 rounded-lg pt-2 px-4 pb-4 shadow-md sm:rounded-lg">
 								<legend className="text-sm font-semibold text-[#1B3351] px-2">ប្រភេទដី</legend>
 								<div className="grid grid-cols-4 gap-3">
 									{[
@@ -602,7 +652,7 @@ export default function FormPage() {
 												id={field}
 												name={field}
 												value={inputs[field as keyof typeof inputs]}
-												onChange={handleInputChange}
+												onChange={handleInputChangeTextArea}
 												placeholder={placeholder}
 												className="bg-[#FFFFFF] h-10 input-global"
 											/>

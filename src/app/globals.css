@@ -35,11 +35,15 @@ textarea, input, button, table tr th, td, select, span, label {
 }
 
 .input-global {
-  @apply block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-[#1B3351] sm:text-sm/6;
+  @apply block w-full rounded-md bg-white px-3 py-1 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-[#1B3351] sm:text-sm/6;
 }
 
 .dropdown-global {
-  @apply w-full p-2 mb-1 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md;
+  @apply w-full p-1 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md;
+}
+
+.th-global {
+  @apply resize-bar absolute right-0 top-0 h-full w-2 cursor-col-resize bg-white opacity-0 group-hover:opacity-100;
 }
 
 

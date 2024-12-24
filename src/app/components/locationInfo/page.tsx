@@ -1,6 +1,6 @@
 import React from "react";
-import DropdownField from "../dropdown";
-import InputField from "../inputfields";
+import DropdownField from "../custom/dropdown";
+import InputField from "../custom/inputfields";
 import { provinceCity } from "@/app/constant/data";
 
 interface LocationInformationProps {
@@ -38,16 +38,16 @@ const LocationInformation: React.FC<LocationInformationProps> = ({
 }) => {
     return (
         <div className="col-span-6 flex flex-col">
-            <fieldset className="border border-gray-300 rounded-lg px-1 py-3 pt-0 md:px-2 bg-white shadow-md sm:rounded-lg">
-                <legend className="text-base font-semibold text-[#1B3351] px-4">ទីតាំង</legend>
-                <div className="grid grid-cols-1 md:grid-cols-12 rounded-md gap-4 py-0 px-1">
+            <fieldset className="border border-gray-300 rounded-lg m-5 p-3 md:px-2 bg-white shadow-md sm:rounded-lg">
+                <legend className="text-base font-semibold text-[#1B3351] px-2">ទីតាំង</legend>
+                <div className="grid grid-cols-1 md:grid-cols-12 rounded-md gap-4 py-2 px-1">
                     {/* Left Section */}
-                    <div className="col-span-1 md:col-span-6 grid grid-cols-1 md:grid-cols-6 gap-2 ">
+                    <div className="col-span-1 md:col-span-6 grid grid-cols-1 md:grid-cols-6 p-2 gap-4">
                         {/* Row 1 */}
                         <div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-2">
                             <DropdownField
                                 id="province"
-                                label={fieldTitles.provinceCity}
+                                label="ខេត្ត/រាជធានី"
                                 options={Object.keys(provinceCity)}
                                 value={selected.province}
                                 onChange={handleChange("province")}
@@ -68,7 +68,7 @@ const LocationInformation: React.FC<LocationInformationProps> = ({
                         <div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-2">
                             <DropdownField
                                 id="district"
-                                label={fieldTitles.district}
+                                label="ស្រុក/ខណ្ឌ/ក្រុង"
                                 options={getOptions("district")}
                                 value={selected.district}
                                 onChange={handleChange("district")}
@@ -89,7 +89,7 @@ const LocationInformation: React.FC<LocationInformationProps> = ({
                         <div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-2">
                             <DropdownField
                                 id="commune"
-                                label={fieldTitles.commune}
+                                label="ឃុំ/សង្កាត់"
                                 options={getOptions("commune")}
                                 value={selected.commune}
                                 onChange={handleChange("commune")}
@@ -129,7 +129,7 @@ const LocationInformation: React.FC<LocationInformationProps> = ({
                     </div>
 
                     {/* Right Section */}
-                    <div className="col-span-1 md:col-span-6 grid grid-cols-1 md:grid-cols-6 gap-1">
+                    <div className="col-span-1 md:col-span-6 grid grid-cols-1 md:grid-cols-6 p-2 gap-2.5">
                         {/* Branch Selection */}
                         <div className="flex flex-col md:flex-row items-start md:items-center col-span-1 md:col-span-6 gap-2 mt-16">
                             <DropdownField

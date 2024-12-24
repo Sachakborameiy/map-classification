@@ -5,9 +5,10 @@ import ViewPage from "../preview-data/page";
 import { columnHeaders, sampleData, } from "../constant/data";
 import Title from "../components/custom/header-title";
 import { provinceCity, communeSangkat, branch, villages, provinceCityCode, districtCode, communeCode, villageCode, branchCode } from "../constant/data";
-import LocationInformation from "../components/custom/locationInformation/page";
-import FamilyInformation from "../components/familyInformation/page";
-import ButtonGroup from "../components/custom/button";
+import LocationInformation from "../components/locationInfo/page";
+import FamilyInformation from "../components/familyInfo/page";
+import LandType from "../components/landInfo/page";
+import ButtonGroup from "../components/custom/ImportDataButton";
 
 // dropdown list
 
@@ -48,6 +49,8 @@ export default function FormPage() {
 	const [showModal, setShowModal] = useState(false);
 	const [message, setMessage] = useState<string | null>(null);
 
+	// #1 LandType 
+
 	const [inputs, setInputs] = useState({
 		branches: "",
 		branch_code: "",
@@ -81,7 +84,9 @@ export default function FormPage() {
 		I3: "",
 	});
 
-	// Dropdown Selection 
+	// End LandType
+
+	// #2 Dropdown Selection 
 
 	const [selected, setSelected] = useState<SelectedType>({
 		province: "",
@@ -177,14 +182,9 @@ export default function FormPage() {
 
 	// End Dropdown Selection 
 
-
-	const handlePreviewClick = () => {
-		setMessage("A reset link has been sent to your email. Please check your inbox.");
-		setShowModal(true);
-	};
-
 	const closeModal = () => setShowModal(false);
 	const handleBack = () => router.push("/land-classification-book");
+	const handlePreview = () => router.push("/preview-data");
 
 	// Mapping form fields to corresponding column headers
 	const fieldTitles = {
@@ -225,7 +225,6 @@ export default function FormPage() {
 
 	const validateForm = () => {
 		let formErrors: any = {};
-
 
 		if (!inputs.num_family) formErrors.field1 = "Field 1 is required";
 		if (!inputs.L_Map_percentage) formErrors.field2 = "Field 2 is required";
@@ -298,15 +297,6 @@ export default function FormPage() {
 	// Check if all inputs are filled
 	const isFormValid = Object.values(inputs).every((input) => input.trim() !== '');
 
-	const handleDelete = (index: number) => {
-		// Create a new array without the item at the specified index
-		const updatedData = data.filter((_, i) => i !== index);
-		setData(updatedData);
-
-		// Update localStorage
-		localStorage.setItem("dataList", JSON.stringify(updatedData));
-	};
-
 	const handleClear = () => {
 		setInputs({
 			province_city: "", province_city_code: "", district_khan_krong: "", district_khan_krong_code: "", commune_sangket: "", commune_sangket_code: "", village: "", village_code: "", branches: "", branch_code: "", phone_commune_sangket: "", phone_village_chief: "", cheif_name_sangket: "", cheif_name_village: "", num_family: "", L_Map_percentage: "", class: "", level_location: "", A1: "", A2: "", A3: "", C1: "", C2: "", C3: "", R1: "", R2: "", R3: "", I1: "", I2: "", I3: "",
@@ -319,15 +309,15 @@ export default function FormPage() {
 	}));
 
 	return (
-		<div className="g-white flex flex-col m-auto fixed w-full">
+		<div className="flex flex-col m-auto fixed w-full">
 			<Title />
-			<div className="bg-white shadow-md py-0 w-full h-full overflow-auto">
-				<div className="bg-white border-l-2 border-r-2 border-t-2 shadow-md rounded-sm p-2 w-full overflow-auto">
-					<form onSubmit={handleSubmit} className="space-y-2 pt-0">
+			<div className="py-0 w-full h-full overflow-auto">
+				<div className="border-l-2 border-r-2 border-t-2 shadow-md rounded-sm p-2 w-full overflow-auto">
+					<form onSubmit={handleSubmit} className="space-y-2">
 
 						<ButtonGroup
 							handleBack={handleBack}
-							handlePreviewClick={handlePreviewClick}
+							handlePreview={handlePreview}
 							handleClear={handleClear}
 							showModal={showModal}
 							message={message}
@@ -336,7 +326,7 @@ export default function FormPage() {
 							transformedColumnHeaders={transformedColumnHeaders}
 						/>
 
-						<div className="grid grid-cols-12 gap-2">
+						<div className="grid grid-cols-12">
 							{/* Location Information */}
 							<LocationInformation
 								selected={selected}
@@ -359,12 +349,15 @@ export default function FormPage() {
 
 							{/* Type Land */}
 						</div>
-						<div>
 
+						<div className="m-5">
+							<LandType
+								inputs={inputs}
+								handleInputChangeTextArea={handleInputChangeTextArea}
+							/>
 						</div>
 					</form>
 				</div>
-				<ViewPage data={data} onDelete={handleDelete} />
 			</div>
 		</div>
 	);

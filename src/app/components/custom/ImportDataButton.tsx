@@ -15,7 +15,7 @@ interface ButtonProps {
 
 interface ButtonGroupProps {
   handleBack: () => void;
-  handlePreviewClick: () => void;
+  handlePreview: () => void;
   handleClear: () => void;
   showModal: boolean;
   message: string;
@@ -47,7 +47,7 @@ const Button: React.FC<ButtonProps> = ({
 
 const ButtonGroup: React.FC<ButtonGroupProps> = ({
   handleBack,
-  handlePreviewClick,
+  handlePreview,
   handleClear,
   showModal,
   message,
@@ -55,7 +55,7 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({
   sampleData,
   transformedColumnHeaders,
 }) => (
-  <div className="flex items-center justify-between space-x-2"> {/* Improved spacing */}
+  <div className="flex items-center justify-between space-x-2 my-1 m-5"> {/* Improved spacing */}
     <div>
       <Button
         type="reset"
@@ -75,13 +75,13 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({
         icon={<Plus className="w-4 h-4" />} 
         backgroundColor="bg-[#5fb637]"
         hoverColor="bg-[#0DAF5E]"
-        label="បន្ថែម"
+        label="Add"
         widthClass="w-3/1"
       />
 
       <Button
         type="submit"
-        onClick={handlePreviewClick}
+        onClick={handlePreview}
         icon={<EyeIcon className="w-4 h-4" />} 
         backgroundColor="bg-[#1B3351]"
         hoverColor="bg-[#1e3e66]"

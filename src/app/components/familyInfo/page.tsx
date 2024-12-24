@@ -16,9 +16,9 @@ const FamilyInformation: React.FC<FamilyInformationProps> = ({
 }) => {
     return (
         <div className="col-span-6 flex flex-col">
-            <fieldset className="border border-gray-300 rounded-lg pt-2 px-4 pb-4 shadow-md sm:rounded-lg">
+            <fieldset className="m-5 bg-white border border-gray-300 rounded-lg py-4 px-4 shadow-md sm:rounded-lg">
                 <legend className="text-sm font-semibold text-[#1B3351] px-2">ព័ត៌មានគ្រួសារ</legend>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* num_family Input */}
                     <InputField
                         id="num_family"
@@ -58,6 +58,8 @@ const FamilyInformation: React.FC<FamilyInformationProps> = ({
                         error={errors.level_location}
                         placeholder={`បញ្ចូល ${fieldTitles["level_location"]}`}
                     />
+
+                    <div className="h-[165px]"></div>
                 </div>
             </fieldset>
         </div>

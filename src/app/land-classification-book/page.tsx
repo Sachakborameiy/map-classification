@@ -305,7 +305,7 @@ export default function MapClassification() {
   };
 
   const handleImportData = () => {
-		router.push("/input-data-book");
+		router.push("/import-data");
 	}
 
 
@@ -330,10 +330,10 @@ export default function MapClassification() {
             <div className="my-2">
               <div className=" rounded-lg p-0.5 pl-4">
                 <div className="flex">
-                  <div className="mt-3 w-[28%]">
+                  <div className="mt-3 w-[37%]">
                     <label className="block font-semibold text-sm">ខេត្ត/រាជធានី</label>
                   </div>
-                  <div className="w-[72%] relative">
+                  <div className="w-[63%] relative">
                     <div>
                       <select
                         className={`w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none`}
@@ -371,11 +371,11 @@ export default function MapClassification() {
                 </div>
 
                 <div className="flex">
-                  <div className="mt-1 w-[28%]">
+                  <div className="mt-1 w-[37%]">
                     <label className="block font-semibold text-sm pb-2">ស្រុក/ក្រុង/ខណ្ខ</label>
                   </div>
                   <div
-                    className="w-[72%] relative"
+                    className="w-[63%] relative"
                     style={{ marginTop: "-0.5em" }}
                   >
                     <div>
@@ -419,11 +419,11 @@ export default function MapClassification() {
                 </div>
 
                 <div className="flex">
-                  <div className="mt-1 w-[28%]">
+                  <div className="mt-1 w-[37%]">
                     <label className="block font-semibold text-sm pb-2">ឃុំ/សង្កាត់</label>
                   </div>
                   <div
-                    className="w-[72%] relative"
+                    className="w-[63%] relative"
                     style={{ marginTop: "-0.5em" }}
                   >
                     <div>
@@ -469,11 +469,11 @@ export default function MapClassification() {
                 </div>
 
                 <div className="flex">
-                  <div className="mt-1 w-[28%]">
+                  <div className="mt-1 w-[37%]">
                     <label className="block font-semibold text-sm pb-2">ភូមិ</label>
                   </div>
                   <div
-                    className="w-[72%] relative"
+                    className="w-[63%] relative"
                     style={{ marginTop: "-0.5em" }}
                   >
                     <div>

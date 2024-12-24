@@ -485,7 +485,7 @@ export default function MapClassification() {
                         }}
                         onClick={handleSelectClickD}
                         disabled={!villageEnabledDropdown}
-                        className="dropdown-global"
+                        className="w-full p-2 mb-4 outline-none cursor-pointer sm:text-sm border shadow-sm rounded-md appearance-none"
                         style={{
                           border: activeSelectVillage
                             ? "1px solid #64d1ff"
@@ -531,9 +531,7 @@ export default function MapClassification() {
             </button>
           </div>
         </div>
-
       </div>
-
 
       <div
         className="flex-1 h-screen m-auto w-full"

@@ -12,10 +12,16 @@ import { Send, Undo2 } from "lucide-react";
 
 interface ShowModalProps {
   showModal: boolean;
+  message: string;
   closeModal: () => void;
-  sampleData: any[];
+  sampleData: any;  // Adjust to the type of `sampleData`
   columnHeaders: { label: string; key: string }[];
+  branches?: string[];
 }
+
+
+
+
 
 const ShowModal: React.FC<ShowModalProps> = ({
   showModal,
@@ -71,7 +77,7 @@ const ShowModal: React.FC<ShowModalProps> = ({
                   {/* Table Body */}
                   <tbody>
                     {sampleData.length > 0 ? (
-                      sampleData.map((row, rowIndex) => (
+                      sampleData.map((row:any, rowIndex) => (
                         <tr
                           key={rowIndex}
                           className="hover:bg-gray-50 transition-colors"

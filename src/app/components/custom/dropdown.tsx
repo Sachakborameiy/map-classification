@@ -1,62 +1,44 @@
-import {
-    Menu,
-    MenuHandler,
-    Button,
-    MenuList,
-    MenuItem,
-    Input,
-  } from "@material-tailwind/react";
-  import { ChevronDown, ChevronUp } from "lucide-react";
-  
-  // Define types for the props
-  interface ProvinceCityMenuProps {
-    locationOptions: {
-      province_city: string[];
-    };
-    inputs: {
-      province_city: string;
-    };
-    handleLocationChange: (field: string, value: string) => void;
-  }
-  
-  export function ProvinceCityMenu({
-    locationOptions,
-    inputs,
-    handleLocationChange,
-  }: ProvinceCityMenuProps) {
-    return (
-      <Menu dismiss={{ itemPress: false }}>
-        <MenuHandler>
-          {({ open }: { open: boolean }) => (
-            <Button className="flex items-center justify-between w-full">
-              {inputs.province_city || "Select Province/City"}
-              <span className="ml-2">
-                {open ? (
-                  <ChevronUp className="text-gray-600" />
-                ) : (
-                  <ChevronDown className="text-gray-600" />
-                )}
-              </span>
-            </Button>
-          )}
-        </MenuHandler>
-        <MenuList>
-          <Input
-            label="Search"
-            containerProps={{
-              className: "mb-4",
-            }}
-          />
-          {locationOptions.province_city?.map((option, index) => (
-            <MenuItem
-              key={index}
-              onClick={() => handleLocationChange("province_city", option)}
-            >
-              {option}
-            </MenuItem>
-          ))}
-        </MenuList>
-      </Menu>
-    );
-  }
-  
+import React from "react";
+
+interface DropdownFieldProps {
+  id: string;
+  label: string;
+  options: string[];
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  error?: string;
+  placeholder?: string;
+}
+
+const DropdownField: React.FC<DropdownFieldProps> = ({
+  id,
+  label,
+  options,
+  value,
+  onChange,
+  error,
+  placeholder = "Please select",
+}) => (
+  <div className="w-full">
+    <label htmlFor={id} className="text-sm font-medium text-[#1B3351]">
+      {label}
+    </label>
+    <select
+      id={id}
+      name={id}
+      onChange={onChange}
+      value={value}
+      className="dropdown-global"
+    >
+      <option value="">{placeholder}</option>
+      {options.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+    {error && <span className="text-red-500 text-xs">{error}</span>}
+  </div>
+);
+
+export default DropdownField;

@@ -1,17 +1,28 @@
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
 
-const Loading = () => {
-    return (
-        <Image
-            src="loading-animate.svg"
-            alt="Map Classification"
-            width={200}
-            height={200}
-            style={{width: "3.5em", height: "3.5em"}}
-            className='rounded-full m-auto p-0 hidden sm:block w-64 h-64 sm:w-10 sm:h-10'
-        />
-    )
-}
+type InputFieldProps = {
+  id: string;
+  label: string;
+  value: string;
+};
 
-export default Loading
+const InputField: React.FC<InputFieldProps> = ({ id, label, value }) => {
+  return (
+    <div className="w-full md:w-1/3">
+      <label htmlFor={id} className="text-sm font-medium text-[#1B3351]">
+        {label}
+      </label>
+      <input
+        type="text"
+        id={id}
+        name={id}
+        value={value}
+        readOnly
+        className="input-disable"
+        disabled
+      />
+    </div>
+  );
+};
+
+export default InputField;
